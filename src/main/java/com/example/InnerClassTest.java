@@ -101,12 +101,12 @@ class Outer {
 /**
  * 内部类继承
  */
-class Test2 extends Outer.Inner {
+class Test1 extends Outer.Inner {
 
     Outer.Inner inner = new Outer().new Inner();
 
     // 继承非静态内部类必须在构造方法内显式调用内部类外类的构造方法
-    Test2(Outer outer) {
+    Test1(Outer outer) {
         outer.super();
     }
 }
@@ -114,6 +114,6 @@ class Test2 extends Outer.Inner {
 /**
  * 静态内部类继承
  */
-class Test3 extends Outer.StaticInner {
+class Test2 extends Outer.StaticInner {
     Outer.StaticInner staticInner = new Outer.StaticInner();
 }
