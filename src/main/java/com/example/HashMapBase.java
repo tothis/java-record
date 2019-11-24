@@ -7,7 +7,7 @@ package com.example;
  */
 public class HashMapBase {
 /**
- * HashMap的长度为2的倍数 默认大小是16个元素
+ * HashMap的长度为2的倍数 默认大小是16个元素 DEFAULT_INITIAL_CAPACITY = 1 << 4
  *
  * HashMap的底层数据结构是由数组+链表组成 底层结构数组为哈希桶 而桶内则是链表 链表中的节点Node存放实际元素
  * HashMap允许key和value为null 线程不安全
