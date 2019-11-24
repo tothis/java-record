@@ -7,6 +7,8 @@ package com.example;
  */
 public class HashMapBase {
 /**
+ * HashMap的长度为2的倍数 默认大小是16个元素
+ *
  * HashMap的底层数据结构是由数组+链表组成 底层结构数组为哈希桶 而桶内则是链表 链表中的节点Node存放实际元素
  * HashMap允许key和value为null 线程不安全
  * HashTable不允许key和value为null 线程安全 所有方法通过synchronized修饰 但效率会降低
@@ -263,7 +265,6 @@ public class HashMapBase {
 // }
 
 /**
- * HashMap的长度为2的倍数
  * 在HashMap的操作流程中 首先会对key进行hash算法得到一个索引值 这个索引值就是对应哈希桶数组的索引
  * 为了得到这个索引值必须对扰动后的数跟数组长度进行取余运算 即hash%n(n为HashMap的长度) 又因为&比%运算快
  * n如果为2的倍数 就可以将%转换为& 结果就是hash&(n-1)
