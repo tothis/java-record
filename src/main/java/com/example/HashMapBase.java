@@ -8,6 +8,7 @@ package com.example;
 public class HashMapBase {
 /**
  * HashMap的长度为2的倍数 默认大小是16个元素 DEFAULT_INITIAL_CAPACITY = 1 << 4
+ * 加载因子为0.75 当元素个数超过容量长度的0.75倍时进行扩容 扩容增量 原容量的1倍 如HashSet的容量为16 一次扩容后容量为32
  *
  * HashMap的底层数据结构是由数组+链表组成 底层结构数组为哈希桶 而桶内则是链表 链表中的节点Node存放实际元素
  * HashMap允许key和value为null 线程不安全
@@ -154,7 +155,7 @@ public class HashMapBase {
  * 扩容是HashMap重点中的重点 也是最耗性能的操作 扩容的步骤是先对size扩大两倍
  * 再对原先的节点重新经过hash算法得到新的索引值即复制到新的哈希桶里 最后得到新的table
  * 其中jdk8对扩容进行了优化 提高了扩容的效率 但在平常运用中尽量要避免让HashMap进行扩容
- * 若已知HashMap中的元素数量 则一开始初始化HashMap时指定容量 这样就减少了HashMap扩容次数
+ * 若已知HashMap中的元素数量 则一开始初始化HashMap时指定容量 可减少HashMap扩容次数
  * <p>
  * jdk8优化如下
  * 对扩容方法进行了优化 经过rehash之后 元素的位置要么是在原位置 要么是在原位置再移动2次幂的位置
