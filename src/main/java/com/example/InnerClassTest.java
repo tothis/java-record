@@ -1,7 +1,7 @@
 package com.example;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author 李磊
@@ -69,12 +69,12 @@ class Outer {
         private String innerFlag = "inner"; // 内部类的私有属性
 
         // 普通内部类不可定义静态成员
-        // private static String staticInnerFlag = "staticInner"; // 内部类的私有属性
+        // private static String staticInnerFlag = "staticInner";
         public void test() {
             outTest();
             outStaticTest();
             // 方法内部类
-            @Data
+            @ToString
             @AllArgsConstructor
             class methodClass {
                 String message;
