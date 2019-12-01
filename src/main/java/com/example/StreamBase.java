@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -229,6 +230,20 @@ public class StreamBase {
             // 普通迭代 count:6121750 time:134ms
             // 串行流  count:6121750 time:1938ms
             // 并行流  count:6121750 time:63ms
+
+            /**
+             * 并行流默认使用的ForkJoinPool线程数和CPU的核心数相同
+             * 当计算密集型的操作 使用是没有问题 ForkJoinPool会将所有的CPU打满 系统资源是不会浪费
+             * 如果其中还有IO操作或等待操作 默认ForkJoinPool只能消耗一部分CPU
+             * 而另外的并行流因为获取不到该ForkJoinPool的使用权 性能将大大降低
+             * 对应非计算密集型的任务 使用自定义ForkJoinPool解决代码如下
+             */
+            ForkJoinPool forkJoinPool = new ForkJoinPool(8);
+            forkJoinPool.submit(() -> {
+                words.parallelStream().forEach(item -> {
+                    // ... 其它操作
+                });
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
