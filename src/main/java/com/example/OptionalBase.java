@@ -98,6 +98,7 @@ public class OptionalBase {
         }
 
         // Optional链式调用 kotlin写法 one?.getTwo()?.getThree()?.getValue()
+        // Optional对象的方法内都会去调用isPresent方法校验 因此可以使用如下方法链式调用
         System.out.println(Optional.ofNullable(one)
                 .map(One::getTwo)
                 .map(Two::getThree)
