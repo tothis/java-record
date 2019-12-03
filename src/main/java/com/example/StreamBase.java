@@ -43,10 +43,13 @@ public class StreamBase {
          * toList 转list
          * toSet 转set
          * toMap 转map
+         * joining 拼接
          */
         Stream.of(1, 2, 3).collect(Collectors.toList());
 
         Stream.of(1, 1, 1).collect(Collectors.toSet());
+        // 转TreeSet
+        TreeSet<Integer> treeSet = Stream.of(1, 1, 1).collect(Collectors.toCollection(TreeSet::new));
 
         @AllArgsConstructor
         @Getter
@@ -68,7 +71,50 @@ public class StreamBase {
                         )
                 ).forEach((key, value) -> System.out.println(key + " " + value));
 
+        // 将字符串stream中的字符串用','(默认无分隔符)相隔拼接为一个字符串
+        System.out.println(Stream.of("1", "2", "3").collect(Collectors.joining(",")));
+        // 当流中的元素不是字符串时 需要先将流转成字符串流再进行拼接
+        System.out.println(Stream.of(1, 2, 3).map(String::valueOf).collect(Collectors.joining()));
+
+        // 总和 平均值 最大值 最小值
+        int sum = Stream.of(1, 2, 3).collect(Collectors.summingInt(Integer::intValue));
+        Double average = Stream.of(1, 2, 3).collect(Collectors.averagingInt(Integer::intValue));
+        Integer max = Stream.of(1, 2, 3).collect(Collectors.maxBy(Integer::compare)).get();
+        Integer min = Stream.of(1, 2, 3).collect(Collectors.minBy(Integer::compare)).get();
+        System.out.println("sum:" + sum + ",average:" + average + ",max:" + max + ",min:" + min);
+
+        // 一次性收集流中的结果 聚合为一个总和 平均值 最大值和最小值的对象
+        IntSummaryStatistics summaryStatistics = Stream.of(1, 2, 3).collect(Collectors.summarizingInt(Integer::intValue));
+        System.out.println(summaryStatistics);
+        @Getter
+        @AllArgsConstructor
+        class Test {
+            private Integer key;
+            private Integer value;
+            private Boolean flag;
+        }
+        List<Test> list = new ArrayList<Test>() {{
+            for (int i = 0; i < 5; i++) {
+                add(new Test(i, i, i % 2 == 0 ? true : false));
+            }
+        }};
+        // groupingBy分组
+        Map<Integer, List<Test>> collect1 = list.stream().collect(Collectors.groupingBy(Test::getKey));
+        // 分类返回布尔值时 会被分为两组列表 此时使用partitoningBy比groupingBy效率更高
+        Map<Boolean, List<Test>> collect2 = list.stream().collect(Collectors.partitioningBy(Test::getFlag));
+        // counting方法会返回收集元素的总个数
+        Map<Integer, Long> collect3 = list.stream().collect(Collectors.groupingBy(Test::getKey, Collectors.counting()));
+        // summing接收一个取值函数(ToIntFunction)作为参数 计算总和
+        Map<Integer, Integer> collect4 = list.stream().collect(Collectors.groupingBy(Test::getKey, Collectors.summingInt(Test::getKey)));
+        // maxBy minBy 取出分组中值最大和值最小的数据
+        Map<Integer, Optional<Test>> collect5 = list.stream().collect(Collectors.groupingBy(Test::getKey, Collectors.maxBy(Comparator.comparing(Test::getValue))));
+        // mapping方法会将结果应用到另一个收集器上 取出value最大的元素
+        Map<Integer, Optional<Integer>> collect6 = list.stream().collect(Collectors.groupingBy(Test::getKey,
+                Collectors.mapping(Test::getValue,
+                        Collectors.maxBy(Comparator.comparing(Integer::valueOf)))));
+
         /**
+         * 生成无限流 generate iterate
          * skip 跳过
          * limit 限制
          *
@@ -79,6 +125,8 @@ public class StreamBase {
          */
         // 创建10个从1开始依次递增1的Long流(数字类型默认为Long) 不使用limit时会导致无限流
         Stream.iterate(1L, i -> i + 1).limit(10).forEach(System.out::println);
+        // 创建10个值为test的流
+        Stream.generate(() -> "test").limit(10).forEach(System.out::println);
 
         // 先跳过前5个元素 并创建10个从第6个元素开始依次递增1的Integer流
         IntStream.iterate(1, i -> i + 1).skip(5).limit(10).forEach(System.out::println);
@@ -90,6 +138,10 @@ public class StreamBase {
         // 包装类则转换正常 如下会只输出5个元素
         Arrays.asList(new Integer[]{5, 4, 3, 2, 1}).forEach(System.out::println);
 
+        // List<Integer> integers = Arrays.asList(new Integer[]{5, 4, 3, 2, 1});
+        // StreamSupport.stream第二个参数表示是否开启并行流
+        // integers.stream() 等同于 -> StreamSupport.stream(integers.spliterator(), false)
+
         // Arrays.stream对基本类型和包装类都起作用
         Arrays.stream(new int[]{5, 4, 3, 2, 1}).forEach(System.out::println);
         Arrays.stream(new Integer[]{5, 4, 3, 2, 1}).forEach(System.out::println);
@@ -98,6 +150,14 @@ public class StreamBase {
         Stream.of(5, 4, 3, 2, 1).sorted().forEach(System.out::println);
         // distinct去重
         Stream.of(1, 1, 2, 2, 3, 3).distinct().forEach(System.out::println);
+
+        // flatMap使用
+        Stream<String> stringStream = Arrays.asList("one", "two", "three").stream()
+                // 把字符串转为字符串数组
+                .map(item -> item.split(""))
+                // 把所有字符串数组合并成一个流
+                .flatMap(Arrays::stream);
+        stringStream.forEach(System.out::println);
 
         /**
          * 匹配
@@ -113,9 +173,9 @@ public class StreamBase {
         }));
 
         /**
-         * findFirst() 获取第一个
-         * findAny() 串行流下会返回第一个结果 并行流下不能确保是第一个
-         * max() 获取最大值 需要实现Comparator
+         * findFirst 获取第一个
+         * findAny 串行流下会返回第一个结果 并行流下不能确保是第一个
+         * max|min 获取最大|小值 需要实现Comparator
          */
         System.out.println(Stream.of(1, 2).findFirst());
         System.out.println(Stream.of(1, 2).findAny());
@@ -277,7 +337,7 @@ public class StreamBase {
         );
 
         int SPLIT_NUMBER = 3;
-        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6);
+        // List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6);
         // java手写方式
         splitList1(list, SPLIT_NUMBER).forEach(System.out::println);
         // stream方式
