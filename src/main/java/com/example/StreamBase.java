@@ -1,9 +1,9 @@
 package com.example;
 
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.apache.commons.collections4.ListUtils;
+// import com.google.common.collect.Lists;
+// import org.apache.commons.collections4.ListUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -343,9 +343,9 @@ public class StreamBase {
         // stream方式
         splitList2(list, SPLIT_NUMBER).forEach(System.out::println);
         // 使用apache common collection对List进行分割
-        ListUtils.partition(list, SPLIT_NUMBER).forEach(System.out::println);
+        // ListUtils.partition(list, SPLIT_NUMBER).forEach(System.out::println);
         // 使用google guava对List进行分割 把iterable按指定大小分割 得到的子集都不能进行修改操作
-        Lists.partition(list, SPLIT_NUMBER).forEach(System.out::println);
+        // Lists.partition(list, SPLIT_NUMBER).forEach(System.out::println);
     }
 
     private static void out(String name, long count, long start) {
