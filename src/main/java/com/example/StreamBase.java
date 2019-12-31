@@ -2,18 +2,22 @@ package com.example;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-// import com.google.common.collect.Lists;
-// import org.apache.commons.collections4.ListUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+// import com.google.common.collect.Lists;
+// import org.apache.commons.collections4.ListUtils;
 
 /**
  * @author 李磊
@@ -107,7 +111,8 @@ public class StreamBase {
         // summing接收一个取值函数(ToIntFunction)作为参数 计算总和
         Map<Integer, Integer> collect4 = list.stream().collect(Collectors.groupingBy(Test::getKey, Collectors.summingInt(Test::getKey)));
         // maxBy minBy 取出分组中值最大和值最小的数据
-        Map<Integer, Optional<Test>> collect5 = list.stream().collect(Collectors.groupingBy(Test::getKey, Collectors.maxBy(Comparator.comparing(Test::getValue))));
+        Map<Integer, Optional<Test>> collect5 = list.stream().collect(Collectors.groupingBy(Test::getKey
+                , Collectors.maxBy(Comparator.comparing(Test::getValue))));
         // mapping方法会将结果应用到另一个收集器上 取出value最大的元素
         Map<Integer, Optional<Integer>> collect6 = list.stream().collect(Collectors.groupingBy(Test::getKey,
                 Collectors.mapping(Test::getValue,
@@ -148,8 +153,48 @@ public class StreamBase {
 
         // sorted排序(默认排序) 使用Stream.of直接创建流
         Stream.of(5, 4, 3, 2, 1).sorted().forEach(System.out::println);
+
+        // 根据Test中Key顺序排序
+        Collections.sort(list, (var1, var2) -> var1.getKey() - var2.getKey());
+
+        Collections.sort(list, Comparator.comparing(Test::getKey));
+
+        List<String> letterList = Arrays.asList("ia,gc,ee,cg,ai".split(","))/*toCharArray()*/;
+
+        Collections.sort(letterList, (var1, var2) -> {
+
+            /**
+             * 升序 var1.compareTo(var2);
+             * 降序 var2.compareTo(var1);
+             */
+            // 按字母升序排(默认排序规则)
+            // return var1.compareTo(var2);
+            // 按第二个字母升序排
+            char c1 = var1.charAt(0);
+            char c2 = var2.charAt(0);
+            // 返回值0代表相等 正数表示大于 负数表示小于
+            return c1 - c2;
+        });
+
         // distinct去重
         Stream.of(1, 1, 2, 2, 3, 3).distinct().forEach(System.out::println);
+
+        // 根据某个实体属性名称去重
+        List<Test> testlist1 = list.stream()
+                .filter(distinctByKey(itme -> itme.getFlag()))
+                // 后面可以连接多个filter
+                // .filter(distinctByKey(itme -> itme.getxxx()))
+                // .filter(distinctByKey(itme -> itme.getxxx()))
+                .collect(Collectors.toList());
+
+        // 通过TreeSet实现去重
+        List<Test> testlist2 = list.stream().collect(
+                Collectors.collectingAndThen(
+                        Collectors.toCollection(() -> new TreeSet<>(
+                                // 多个属性可以拼接为字符串再去去重
+                                Comparator.comparing(o -> o.getFlag()/*+o.getKey()+o.getValue()*/)
+                        )), ArrayList::new)
+        );
 
         // flatMap使用
         Stream<String> stringStream = Arrays.asList("one", "two", "three").stream()
@@ -409,5 +454,13 @@ public class StreamBase {
 //                ).collect(Collectors.toList());
 
         return splitList;
+    }
+
+    /**
+     * 使用filter多次调用实现多个属性排序
+     */
+    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> function) {
+        Map<Object, Boolean> booleanMap = new ConcurrentHashMap<>();
+        return result -> booleanMap.putIfAbsent(function.apply(result), Boolean.TRUE) == null;
     }
 }
