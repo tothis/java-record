@@ -22,8 +22,18 @@ ext {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
-    implementation 'com.google.guava:guava:28.1-jre'
-    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+
+    implementation 'org.openjdk.jol:jol-core:0.9'
+    implementation 'redis.clients:jedis:3.1.0'
+
+    // log4j2核心包
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
+    // web项目需要添加
+    // implementation group: 'org.apache.logging.log4j', name: 'log4j-web', version: '2.12.1'
+    // 与slf4j保持桥接 自动依赖了slf4j-api
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.12.1'
+    // slf4j核心包 桥接包会自动依赖 可省略
+    // implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
 
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${jacksonVersion}"

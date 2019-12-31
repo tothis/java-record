@@ -388,7 +388,10 @@ public class StreamBase {
         // stream方式
         splitList2(list, SPLIT_NUMBER).forEach(System.out::println);
         // 使用apache common collection对List进行分割
+        // implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
         // ListUtils.partition(list, SPLIT_NUMBER).forEach(System.out::println);
+
+        // implementation 'com.google.guava:guava:28.1-jre'
         // 使用google guava对List进行分割 把iterable按指定大小分割 得到的子集都不能进行修改操作
         // Lists.partition(list, SPLIT_NUMBER).forEach(System.out::println);
     }
