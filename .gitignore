@@ -1,13 +1,6 @@
 # idea
 .idea
 
-# java
+# gradle
 .gradle
-*/build
-*/out
-*.class
-*.jar
-*.war
-
-# log
-*.log
+build
