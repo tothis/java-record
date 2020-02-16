@@ -21,6 +21,9 @@ ext {
     jacksonVersion = '2.10.1'
     jsoupVersion = '1.11.2'
     seleniumVersion = '3.141.59'
+    zxingVersion = '3.3.0'
+    javacvVersion = '1.4.1'
+    ffmpegVersion = '4.2.1-1.5.2'
 }
 
 dependencies {
@@ -47,6 +50,11 @@ dependencies {
 
     // selenium
     implementation "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
+
+    implementation "com.google.zxing:javase:${zxingVersion}"
+
+    implementation "org.bytedeco:javacv-platform:${javacvVersion}"
+    implementation "org.bytedeco:ffmpeg-platform:${ffmpegVersion}"
 }
 // 或新建GRADLE_OPTS环境变量 值为-Dfile.encoding=utf-8
 tasks.withType(JavaCompile) {
