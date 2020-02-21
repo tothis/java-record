@@ -47,7 +47,7 @@ public class JsoupTest {
                     for (int i = 0; i < images.size(); i++) {
                         URL u = new URL(images.get(i).attr("src"));
                         HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-                        // 因为服务器的安全设置不接受Java程序作为客户端访问 所以设置客户端的User Agent
+                        // 设置user-agent
                         connection.setRequestProperty("User-Agent", userAgent);
                         // 获取数据流
                         InputStream inputStream = connection.getInputStream();
