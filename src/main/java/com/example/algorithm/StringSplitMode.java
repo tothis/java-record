@@ -1,5 +1,7 @@
 package com.example.algorithm;
 
+import java.util.Scanner;
+
 public class StringSplitMode {
 
     public static int count;
@@ -21,6 +23,56 @@ public class StringSplitMode {
             out[length - 1] = chars[i - 1]; // 选定一个之后
             markChar(chars, length - 1, out); // 从前i-1个后选m-1 递归
         }
+    }
+
+    /**
+     * 对给出的字符串按汉字 字母 数字统计个数
+     */
+    public static void countChar() {
+        int hanziCount = 0;
+        int zimuCount = 0;
+        int shuziCount = 0;
+        System.out.println("请输入字符串>>>");
+        Scanner scanner = new Scanner(System.in);
+        String input_str = scanner.next();
+        for (int i = 0; i < input_str.length(); i++) {
+            //从字符串中截取单个个字符去比较
+            char ch = input_str.charAt(i);
+            if (ch >= '0' && ch <= '9') {
+                shuziCount++;
+            } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
+                zimuCount++;
+            } else {
+                hanziCount++;
+            }
+        }
+        System.out.println("汉字个数>>>" + hanziCount + "\n"
+                + "字母个数>>>" + zimuCount + "\n"
+                + "数字个数>>>" + shuziCount);
+    }
+
+    /**
+     * 输入两个数字求出最大公约数和最小公倍数
+     */
+    public static void divisorAndMultiple() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("请输入两个整数>>>");
+        int one = scanner.nextInt();
+        int two = scanner.nextInt();
+        int max = 0;//最大公约数
+        int min = 0;//最小公倍数
+        if (one > two) {//使one为两数较小值
+            int temp = one;
+            one = two;
+            two = temp;
+        }
+
+        for (int i = 1; i <= one; i++) {
+            if (one % i == 0 & two % i == 0) max = i;
+        }
+
+        min = one * two / max;
+        System.out.println("最大公约数为>>>" + max + ",最小公倍数为>>>" + min);
     }
 
     /**
