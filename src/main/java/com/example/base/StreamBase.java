@@ -1,6 +1,7 @@
 package com.example.base;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -55,12 +56,6 @@ public class StreamBase {
         // 转TreeSet
         TreeSet<Integer> treeSet = Stream.of(1, 1, 1).collect(Collectors.toCollection(TreeSet::new));
 
-        @AllArgsConstructor
-        @Getter
-        class User {
-            private int one;
-            private int two;
-        }
         Stream.of(new User(1, -1), new User(1, -2))
                 .collect(Collectors.toMap(
                         User::getOne
@@ -80,6 +75,14 @@ public class StreamBase {
         // 当流中的元素不是字符串时 需要先将流转成字符串流再进行拼接
         System.out.println(Stream.of(1, 2, 3).map(String::valueOf).collect(Collectors.joining()));
 
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < 10; i++) users.add(new User(i, -i));
+
+        // map方法获取user中one字段作为新的list
+        users.stream().map(User::getOne).forEach(System.out::println);
+        // filter方法限制user中one字段值为偶数
+        users.stream().filter(item -> item.getOne() % 2 == 0).forEach(System.out::println);
+
         // 总和 平均值 最大值 最小值
         int sum = Stream.of(1, 2, 3).collect(Collectors.summingInt(Integer::intValue));
         Double average = Stream.of(1, 2, 3).collect(Collectors.averagingInt(Integer::intValue));
@@ -90,13 +93,7 @@ public class StreamBase {
         // 一次性收集流中的结果 聚合为一个总和 平均值 最大值和最小值的对象
         IntSummaryStatistics summaryStatistics = Stream.of(1, 2, 3).collect(Collectors.summarizingInt(Integer::intValue));
         System.out.println(summaryStatistics);
-        @Getter
-        @AllArgsConstructor
-        class Test {
-            private Integer key;
-            private Integer value;
-            private Boolean flag;
-        }
+
         List<Test> list = new ArrayList<Test>() {{
             for (int i = 0; i < 5; i++) {
                 add(new Test(i, i, i % 2 == 0 ? true : false));
@@ -407,11 +404,11 @@ public class StreamBase {
      */
     private static <T> List<List<T>> splitList1(List<T> source, int split) {
         List<List<T>> result = new ArrayList<>();
-        //(先计算出余数)
+        // 余数
         int remainder = source.size() % split;
-        //然后是商
+        // 商
         int number = source.size() / split;
-        //偏移量
+        // 偏移量
         int offset = 0;
         for (int i = 0; i < split; i++) {
             List<T> value;
@@ -465,5 +462,20 @@ public class StreamBase {
     public static <T> Predicate<T> distinctByKey(Function<? super T, Object> function) {
         Map<Object, Boolean> booleanMap = new ConcurrentHashMap<>();
         return result -> booleanMap.putIfAbsent(function.apply(result), Boolean.TRUE) == null;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class User {
+        private int one;
+        private int two;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class Test {
+        private Integer key;
+        private Integer value;
+        private Boolean flag;
     }
 }
