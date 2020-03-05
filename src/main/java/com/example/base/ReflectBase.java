@@ -46,7 +46,7 @@ public class ReflectBase {
                 boolean annotationPresent = method.isAnnotationPresent(Test.class);
                 if (annotationPresent) {
                     // 该方法使用@Test注解
-                    method.invoke(clazz.newInstance(), null);
+                    method.invoke(clazz.newInstance());
                 }
             }
         }

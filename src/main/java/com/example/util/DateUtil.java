@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateUtil {
 
+    public static final String FULL_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
     public static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String FORMAT_DATE = "yyyy-MM-dd";
     public static final String FORMAT_TIME = "HH:mm:ss";
