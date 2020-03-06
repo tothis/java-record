@@ -42,5 +42,9 @@ public class ArrayListBase {
         }
 
         list.forEach(System.out::println);
+
+        // 指定索引位置添加元素
+        list.add(3, 3);
+        System.out.println(list);
     }
 }
