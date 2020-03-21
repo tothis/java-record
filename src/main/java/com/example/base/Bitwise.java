@@ -5,7 +5,7 @@ package com.example.base;
  * @datetime 2020/3/9 0:16
  * @description 位运算符
  */
-public class Bitwise {
+public class BitWise {
     /**
      * 位运算符 与(&) 或(|) 异或(^) 逐位取反(~) 左移(<<) 右移(>>) 无符号右移(>>>)
      * 位运算 进行二进制数相同位之间布尔值运算 1表示true 0表示false
