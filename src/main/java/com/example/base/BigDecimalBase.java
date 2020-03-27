@@ -33,6 +33,13 @@ public class BigDecimalBase {
         System.out.println("* -> " + decimal1.multiply(decimal1)); // 0.01
         System.out.println("/ -> " + decimal3.divide(decimal1)); // 0.3
 
+        // decimal1等于0
+        System.out.println(decimal1.compareTo(BigDecimal.ZERO) == 0);
+        // decimal1大于0
+        System.out.println(decimal1.compareTo(BigDecimal.ZERO) == 1);
+        // decimal1小于0
+        System.out.println(decimal1.compareTo(BigDecimal.ZERO) == -1);
+
         // BigDecimal除法可能出现不能整除的情况 并抛出异常java.lang.ArithmeticException
         // System.out.println("不能整除 -> " + decimal1.divide(decimal3));
         /**
