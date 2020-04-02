@@ -5,7 +5,7 @@ package com.example.util;
  * 将十进制的数字转换为指定进制字符串
  * 将其它进制数字转换为十进制数字
  */
-public class NumberConvertUtil {
+public class NumberUtil {
 
     public static void main(String[] args) {
         System.out.println(decToN(10000, 65));
