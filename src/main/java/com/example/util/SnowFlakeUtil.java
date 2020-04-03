@@ -100,15 +100,15 @@ public class SnowFlakeUtil {
         for (int i = 0; i < (1 << 4); i++) {
             // 10进制
             Long id = snowFlake.nextId();
-            // 62进制
-            String result = NumberUtil.decToN(id, 62);
+            // 64进制
+            String result = NumberUtil.decToN(id, 64);
 
-            // 10进制转化为62进制
-            System.out.println("10进制 : " + id + " 62进制 : " + result);
+            // 10进制转化为64进制
+            System.out.println("10进制 : " + id + " 64进制 : " + result);
 
-            // 62进制转化为10进制
-            System.out.println("62进制 : " + result + " 10进制 : "
-                    + NumberUtil.strToDec(result, 62));
+            // 64进制转化为10进制
+            System.out.println("64进制 : " + result + " 10进制 : "
+                    + NumberUtil.strToDec(result, 64));
         }
     }
 }
