@@ -42,6 +42,8 @@ public class BigDecimalBase {
 
         // BigDecimal除法可能出现不能整除的情况 并抛出异常java.lang.ArithmeticException
         // System.out.println("不能整除 -> " + decimal1.divide(decimal3));
+        System.out.println("不能整除 -> " + decimal1.divide(decimal3, BigDecimal.ROUND_HALF_UP));
+        System.out.println("不能整除 -> " + decimal1.divide(decimal3, 2, BigDecimal.ROUND_HALF_UP));
         /**
          * 参数一为除数 参数二为小数点后保留位数 参数三为舍入模式
          *
