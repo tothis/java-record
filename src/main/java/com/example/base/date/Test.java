@@ -93,5 +93,10 @@ public class Test {
         // 使用实现TemporalAmount接口的Duration类和Period类
         System.out.println(localDateTime.toLocalTime().plus(Duration.ofHours(25).plusMinutes(3)));
         System.out.println(localDateTime.toLocalDate().plus(Period.ofMonths(2)));
+
+        System.out.println(LocalDate.now().getDayOfWeek()); // 今日为星期几
+        System.out.println(LocalDate.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY))); // 上周周日
+        System.out.println(LocalDate.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY)).plusDays(1)); // 本周周周一
+        System.out.println(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).minusDays(1)); // 本周周日
     }
 }

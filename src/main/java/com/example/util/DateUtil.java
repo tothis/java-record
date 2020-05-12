@@ -2,6 +2,7 @@ package com.example.util;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
@@ -177,6 +178,12 @@ public class DateUtil {
                 .toInstant());
     }
 
+    // ***** *****
+
+    public static LocalDate plus(LocalDate localDate, long between, ChronoUnit chronoUnit) {
+        return localDate.plus(between, chronoUnit);
+    }
+
     public static void main(String[] args) {
         System.out.println(dateTime());
         System.out.println(date());
@@ -185,5 +192,7 @@ public class DateUtil {
         System.out.println(date(localDateToDate(LocalDate.now())));
         System.out.println(time(localTimeToDate(LocalTime.now())));
         System.out.println(dateTime(localDateTimeToDate(LocalDateTime.now())));
+        // 获取两天后的日期
+        System.out.println(plus(LocalDate.now(), 2, ChronoUnit.DAYS));
     }
 }
