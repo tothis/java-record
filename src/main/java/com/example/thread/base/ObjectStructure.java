@@ -1,4 +1,4 @@
-package com.example.thread;
+package com.example.thread.base;
 
 import org.openjdk.jol.info.ClassLayout;
 import sun.misc.Unsafe;
@@ -8,9 +8,9 @@ import java.lang.reflect.Field;
 /**
  * @author 李磊
  * @time 2019/11/10 23:15
- * @description 初识java对象结构
+ * @description 对象结构
  */
-public class Test {
+public class ObjectStructure {
 
     public static int hashCode(Object object) {
         // 手动计算hashCode
@@ -34,7 +34,7 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        Test test = new Test();
+        ObjectStructure o = new ObjectStructure();
         /**
          * 64位jvm分配对象大小必须为8的倍数
          * 1.对象头 96bit -> 12byte
@@ -42,10 +42,10 @@ public class Test {
          * 3.填充对其 如上数据相加不为8的倍数 通过填充对其
          */
         // hashCode默认不会计算
-        System.out.println(Integer.toHexString(test.hashCode()));
-        System.out.println(test.hashCode());
-        System.out.println(hashCode(test));
-        System.out.println(ClassLayout.parseInstance(test).toPrintable());
+        System.out.println(Integer.toHexString(o.hashCode()));
+        System.out.println(o.hashCode());
+        System.out.println(hashCode(o));
+        System.out.println(ClassLayout.parseInstance(o).toPrintable());
 
         /**
          * java对象头有mark word和klass pointer/class metadata address

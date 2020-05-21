@@ -11,6 +11,88 @@ import java.util.concurrent.*;
  * @description java线程池相关
  */
 public class ThreadPoolTest {
+    /**
+     * ScheduledThreadPoolExecutor
+     * <p>
+     * ScheduledThreadPoolExecutor继承ThreadPoolExecutor 同时通过实现ScheduledExecutorSerivce来扩展基础线程池的功能
+     * 使其拥有了调度能力 其整个调度的核心在于内部类DelayedWorkQueue(有序的延时队列)
+     * ScheduledThreadPoolExecutor出现 弥补Timer不足 对比如下
+     * <p>
+     * <table>
+     * <tr>
+     * <td></td>
+     * <td>Timer</td>
+     * <td>ScheduledThreadPoolExecutor</td>
+     * </tr>
+     * <tr>
+     * <td>线程</td>
+     * <td>单线程</td>
+     * <td>多线程</td>
+     * </tr>
+     * <tr>
+     * <td>多任务</td>
+     * <td>任务之间相互影响</td>
+     * <td>任务之间互不影响</td>
+     * </tr>
+     * <tr>
+     * <td>调度时间</td>
+     * <td>绝对时间</td>
+     * <td>相对时间</td>
+     * </tr>
+     * <tr>
+     * <td>异常</td>
+     * <td>单任务异常 后续任务受影响</td>
+     * <td>无影响</td>
+     * </tr>
+     * </table>
+     * <p>
+     * 线程池中的最大线程数用的Integer.MAX_VALUE 阻塞队列是无界队列 阻塞队列采用DelayQueue(无界队列)
+     * DelayQueue内部封装了一个PriorityQueue 它会根据time的先后排序 若time相同 则根据sequenceNumber排序
+     * <p>
+     * 工作线程执行流程
+     * 1.工作线程会从DelayQueue中取出已经到期的任务去执行
+     * 2.执行结束后重新设置任务的到期时间 再次放回DelayQueue
+     */
+    private static final Random RANDOM = new Random();
+    /**
+     * FixedThreadPool
+     * <p>
+     * 优势 corePoolSize与maximumPoolSize相等 即为固定大小的线程池线程 全为核心线程
+     * keepAliveTime为0 该参数默认对核心线程无效 而FixedThreadPool全部为核心线程
+     * workQueue为LinkedBlockingQueue(无界阻塞队列) 队列最大值为Integer.MAX_VALUE
+     * <p>
+     * 劣势 如果任务提交速度持续大余任务处理速度 会造成队列大量阻塞 因为队列很大 很有可能在拒绝策略前 内存溢出
+     * FixedThreadPool任务执行无序
+     * <p>
+     * 适用场景 可用于Web服务瞬时削峰 但需注意长时间持续高峰情况造成的队列阻塞
+     * <p>
+     * 最大线程阻塞数无限大 阻塞队列采用LinkedBlockingQueue(无界队列) 永远不可能拒绝执行任务 由于采用无界队列
+     * 实际线程数将永远维持在nThreads 因此maximumPoolSize和keepAliveTime将无效
+     */
+    private static ExecutorService executorService1 = Executors.newFixedThreadPool(5);
+
+    /**
+     * CachedThreadPool
+     * <p>
+     * corePoolSize为0 maximumPoolSize为Integer.MAX_VALUE 即线程数量几乎无限制
+     * keepAliveTime为60s 线程空闲60s后自动结束
+     * workQueue为SynchronousQueue(同步队列) 这个队列类似于一个接力棒 入队出队必须同时传递
+     * 因为CachedThreadPool线程创建无限制 不会有队列等待 所以使用SynchronousQueue
+     * <p>
+     * 适用场景 快速处理大量耗时较短的任务 如Netty的NIO接受请求时
+     * <p>
+     * 最大线程数无限大 maximumPoolSize为Integer.MAX_VALUE 阻塞队列采用SynchronousQueue 这种阻塞队列没有存储空间
+     * 意味着只要有任务到来 就必须得有一个工作线程来处理 如果当前没有空闲线程 那么就再创建一个新的线程
+     */
+    private static ExecutorService executorService2 = Executors.newCachedThreadPool((runnable) -> new Thread(runnable));
+
+    /**
+     * SingleThreadExecutor
+     * <p>
+     * 比newFixedThreadPool(1)多了一层FinalizableDelegatedExecutorService包装
+     */
+    private static ExecutorService executorService3 = Executors.newSingleThreadExecutor((runnable) -> new Thread(runnable));
+
     public static void main(String[] args) {
         BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<>(200);
         // LinkedBlockingDeque linkedBlockingDeque = new LinkedBlockingDeque(200);
@@ -122,107 +204,6 @@ public class ThreadPoolTest {
         scheduleWithFixedDelay();
     }
 
-    /**
-     * FixedThreadPool
-     * <p>
-     * 优势 corePoolSize与maximumPoolSize相等 即为固定大小的线程池线程 全为核心线程
-     * keepAliveTime为0 该参数默认对核心线程无效 而FixedThreadPool全部为核心线程
-     * workQueue为LinkedBlockingQueue(无界阻塞队列) 队列最大值为Integer.MAX_VALUE
-     * <p>
-     * 劣势 如果任务提交速度持续大余任务处理速度 会造成队列大量阻塞 因为队列很大 很有可能在拒绝策略前 内存溢出
-     * FixedThreadPool任务执行无序
-     * <p>
-     * 适用场景 可用于Web服务瞬时削峰 但需注意长时间持续高峰情况造成的队列阻塞
-     * <p>
-     * 最大线程阻塞数无限大 阻塞队列采用LinkedBlockingQueue(无界队列) 永远不可能拒绝执行任务 由于采用无界队列
-     * 实际线程数将永远维持在nThreads 因此maximumPoolSize和keepAliveTime将无效
-     */
-    private static ExecutorService executorService1 = Executors.newFixedThreadPool(5);
-
-    /**
-     * CachedThreadPool
-     * <p>
-     * corePoolSize为0 maximumPoolSize为Integer.MAX_VALUE 即线程数量几乎无限制
-     * keepAliveTime为60s 线程空闲60s后自动结束
-     * workQueue为SynchronousQueue(同步队列) 这个队列类似于一个接力棒 入队出队必须同时传递
-     * 因为CachedThreadPool线程创建无限制 不会有队列等待 所以使用SynchronousQueue
-     * <p>
-     * 适用场景 快速处理大量耗时较短的任务 如Netty的NIO接受请求时
-     * <p>
-     * 最大线程数无限大 maximumPoolSize为Integer.MAX_VALUE 阻塞队列采用SynchronousQueue 这种阻塞队列没有存储空间
-     * 意味着只要有任务到来 就必须得有一个工作线程来处理 如果当前没有空闲线程 那么就再创建一个新的线程
-     */
-    private static ExecutorService executorService2 = Executors.newCachedThreadPool((runnable) -> new Thread(runnable));
-
-    /**
-     * SingleThreadExecutor
-     * <p>
-     * 比newFixedThreadPool(1)多了一层FinalizableDelegatedExecutorService包装
-     */
-    private static ExecutorService executorService3 = Executors.newSingleThreadExecutor((runnable) -> new Thread(runnable));
-
-    /**
-     * 对比可以看出 FixedThreadPool可以向下转型为ThreadPoolExecutor 并对其线程池进行配置
-     * 而SingleThreadExecutor被包装后 无法成功向下转型 SingleThreadExecutor创建后 无法修改
-     * <p>
-     * 虽然线程池的核心线程数和最大线程数都为1 但是阻塞队列的最大长度为Integer.MAX_VALUE
-     * 阻塞队列采用LinkedBlockingQueue(无界队列)
-     */
-    private void SingleThreadExecutorTest() {
-        ExecutorService fixedExecutorService = Executors.newFixedThreadPool(1);
-        ThreadPoolExecutor threadPoolExecutor1 = (ThreadPoolExecutor) fixedExecutorService;
-        System.out.println(threadPoolExecutor1.getMaximumPoolSize());
-        threadPoolExecutor1.setCorePoolSize(2);
-
-        ExecutorService singleExecutorService = Executors.newSingleThreadExecutor();
-        // 运行时异常 java.lang.ClassCastException
-        // ThreadPoolExecutor threadPoolExecutor2 = (ThreadPoolExecutor) singleExecutorService;
-    }
-
-    /**
-     * ScheduledThreadPoolExecutor
-     * <p>
-     * ScheduledThreadPoolExecutor继承ThreadPoolExecutor 同时通过实现ScheduledExecutorSerivce来扩展基础线程池的功能
-     * 使其拥有了调度能力 其整个调度的核心在于内部类DelayedWorkQueue(有序的延时队列)
-     * ScheduledThreadPoolExecutor出现 弥补Timer不足 对比如下
-     * <p>
-     * <table>
-     * <tr>
-     * <td></td>
-     * <td>Timer</td>
-     * <td>ScheduledThreadPoolExecutor</td>
-     * </tr>
-     * <tr>
-     * <td>线程</td>
-     * <td>单线程</td>
-     * <td>多线程</td>
-     * </tr>
-     * <tr>
-     * <td>多任务</td>
-     * <td>任务之间相互影响</td>
-     * <td>任务之间互不影响</td>
-     * </tr>
-     * <tr>
-     * <td>调度时间</td>
-     * <td>绝对时间</td>
-     * <td>相对时间</td>
-     * </tr>
-     * <tr>
-     * <td>异常</td>
-     * <td>单任务异常 后续任务受影响</td>
-     * <td>无影响</td>
-     * </tr>
-     * </table>
-     * <p>
-     * 线程池中的最大线程数用的Integer.MAX_VALUE 阻塞队列是无界队列 阻塞队列采用DelayQueue(无界队列)
-     * DelayQueue内部封装了一个PriorityQueue 它会根据time的先后排序 若time相同 则根据sequenceNumber排序
-     * <p>
-     * 工作线程执行流程
-     * 1.工作线程会从DelayQueue中取出已经到期的任务去执行
-     * 2.执行结束后重新设置任务的到期时间 再次放回DelayQueue
-     */
-    private static final Random RANDOM = new Random();
-
     public static void schedule() {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
@@ -245,6 +226,24 @@ public class ThreadPoolTest {
         System.out.println(DateUtil.time());
 
         scheduledExecutorService.scheduleWithFixedDelay(new Task(), 2, 10, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 对比可以看出 FixedThreadPool可以向下转型为ThreadPoolExecutor 并对其线程池进行配置
+     * 而SingleThreadExecutor被包装后 无法成功向下转型 SingleThreadExecutor创建后 无法修改
+     * <p>
+     * 虽然线程池的核心线程数和最大线程数都为1 但是阻塞队列的最大长度为Integer.MAX_VALUE
+     * 阻塞队列采用LinkedBlockingQueue(无界队列)
+     */
+    private void SingleThreadExecutorTest() {
+        ExecutorService fixedExecutorService = Executors.newFixedThreadPool(1);
+        ThreadPoolExecutor threadPoolExecutor1 = (ThreadPoolExecutor) fixedExecutorService;
+        System.out.println(threadPoolExecutor1.getMaximumPoolSize());
+        threadPoolExecutor1.setCorePoolSize(2);
+
+        ExecutorService singleExecutorService = Executors.newSingleThreadExecutor();
+        // 运行时异常 java.lang.ClassCastException
+        // ThreadPoolExecutor threadPoolExecutor2 = (ThreadPoolExecutor) singleExecutorService;
     }
 
     static class Task implements Runnable {

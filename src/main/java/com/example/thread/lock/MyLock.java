@@ -1,4 +1,4 @@
-package com.example.thread;
+package com.example.thread.lock;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -9,7 +9,7 @@ import java.util.concurrent.locks.Lock;
  * @time 2019/11/11 15:21
  * @description 手动实现java锁机制 tryLock lock unlock
  */
-public class LockTest implements Lock {
+public class MyLock implements Lock {
 
     // 表示对象的锁是否被占用 true表示对象锁已经被占用
     private boolean flag;
@@ -19,6 +19,28 @@ public class LockTest implements Lock {
 
     // 使用队列控制线程执行顺序
     // private Queue<Thread> threadQueue = new ArrayDeque<>();
+
+    public static void main(String[] args) {
+        final MyLock lock = new MyLock();
+        // 创建10个线程
+        for (int i = 0; i < 3; i++) {
+
+            new Thread(() -> {
+                lock.lock();
+                work();
+                lock.unlock();
+            }, "thread-" + (i + 1)).start();
+        }
+    }
+
+    private static void work() {
+        System.out.println(Thread.currentThread().getName() + "正在执行业务逻辑");
+//        try {
+//            Thread.sleep(1_000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
 
     @Override
     public void lock() {
@@ -80,27 +102,5 @@ public class LockTest implements Lock {
     @Override
     public Condition newCondition() {
         return null;
-    }
-
-    public static void main(String[] args) {
-        final LockTest lock = new LockTest();
-        // 创建10个线程
-        for (int i = 0; i < 3; i++) {
-
-            new Thread(() -> {
-                lock.lock();
-                work();
-                lock.unlock();
-            }, "thread-" + (i + 1)).start();
-        }
-    }
-
-    private static void work() {
-        System.out.println(Thread.currentThread().getName() + "正在执行业务逻辑");
-//        try {
-//            Thread.sleep(1_000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
     }
 }

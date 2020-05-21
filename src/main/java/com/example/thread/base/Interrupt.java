@@ -1,4 +1,4 @@
-package com.example.thread;
+package com.example.thread.base;
 
 import com.example.util.DateUtil;
 
@@ -7,12 +7,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author 李磊
  * @time 2019/11/14 19:33
- * @description 线程中断和stop() resume() suspend()
+ * @description 线程中断
  */
-public class ThreadTest2 {
+public class Interrupt {
 
     /**
-     * 这三个方法已经是jdk是过期的方法 不建议使用
+     * stop() resume() suspend()
+     * 如上三个方法为jdk过期方法 不建议使用
      * suspend方法用于暂停线程的执行
      * resume方法用于恢复线程的执行 和suspend方法配对使用
      * stop方法用于终止一个线程的执行
@@ -168,6 +169,10 @@ public class ThreadTest2 {
         }
     }
 
+    private static void out() {
+        System.out.println(Thread.currentThread().getName() + "-" + DateUtil.time());
+    }
+
     /**
      * 该任务实现每隔一秒打印信息
      */
@@ -184,10 +189,6 @@ public class ThreadTest2 {
                 }
             }
         }
-    }
-
-    private static void out() {
-        System.out.println(Thread.currentThread().getName() + "-" + DateUtil.time());
     }
 
     static class ThreadTest extends Thread {

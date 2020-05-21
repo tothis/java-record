@@ -1,4 +1,4 @@
-package com.example.thread;
+package com.example.thread.lock;
 
 import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;

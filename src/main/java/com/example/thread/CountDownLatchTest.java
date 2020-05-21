@@ -5,11 +5,18 @@ import com.example.util.DateUtil;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * @author: lilei
- * @time: 2019-11-24 23:15
- * @description: J.U.C是JDK 1.5提供的包 java.util.concurrent Countdownlatch允许一个或多个线程等待直到在其他线程中一组操作执行完成
+ * @author: 李磊
+ * @datetime: 2019-11-24 23:15
+ * @description: Countdownlatch使用
  */
 public class CountDownLatchTest {
+    /**
+     * J.U.C是JDK 1.5提供的包 java.util.concurrent
+     * Countdownlatch允许一个或多个线程等待直到在其他线程中一组操作执行完成
+     *
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
         // 某个线程需要等待一个或多个线程(多个线程是同步的)操作结束后开始执行
         int threadTotal = 3;

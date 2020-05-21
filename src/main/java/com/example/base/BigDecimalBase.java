@@ -1,6 +1,7 @@
 package com.example.base;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author 李磊
@@ -42,8 +43,10 @@ public class BigDecimalBase {
 
         // BigDecimal除法可能出现不能整除的情况 并抛出异常java.lang.ArithmeticException
         // System.out.println("不能整除 -> " + decimal1.divide(decimal3));
-        System.out.println("不能整除 -> " + decimal1.divide(decimal3, BigDecimal.ROUND_HALF_UP));
-        System.out.println("不能整除 -> " + decimal1.divide(decimal3, 2, BigDecimal.ROUND_HALF_UP));
+        // System.out.println("不能整除 -> " + decimal1.divide(decimal3, RoundingMode.HALF_UP));
+        // 建议使用RoundingMode设置舍入模式
+        System.out.println("不能整除 -> " + decimal1.divide(decimal3, RoundingMode.HALF_UP));
+        System.out.println("不能整除 -> " + decimal1.divide(decimal3, 2, RoundingMode.HALF_UP));
         /**
          * 参数一为除数 参数二为小数点后保留位数 参数三为舍入模式
          *
@@ -56,43 +59,43 @@ public class BigDecimalBase {
          * ROUND_HALF_EVEN 银行家舍入算法
          * ROUND_UNNECESSARY 不进行舍入 如存在无限小数 抛出异常ArithmeticException
          */
-        roundDecimal(".01", BigDecimal.ROUND_UP); // 0.1
-        roundDecimal("-.01", BigDecimal.ROUND_UP); // -0.1
-        roundDecimal(".09", BigDecimal.ROUND_DOWN); // 0.0
-        roundDecimal("-.09", BigDecimal.ROUND_DOWN); // 0.0
+        roundDecimal(".01", RoundingMode.UP); // 0.1
+        roundDecimal("-.01", RoundingMode.UP); // -0.1
+        roundDecimal(".09", RoundingMode.DOWN); // 0.0
+        roundDecimal("-.09", RoundingMode.DOWN); // 0.0
         System.out.println("-----");
 
-        roundDecimal(".01", BigDecimal.ROUND_CEILING); // 0.1
-        roundDecimal("-.01", BigDecimal.ROUND_CEILING); // 0.0
-        roundDecimal(".09", BigDecimal.ROUND_FLOOR); // 0.0
-        roundDecimal("-.09", BigDecimal.ROUND_FLOOR); // -0.1
+        roundDecimal(".01", RoundingMode.CEILING); // 0.1
+        roundDecimal("-.01", RoundingMode.CEILING); // 0.0
+        roundDecimal(".09", RoundingMode.FLOOR); // 0.0
+        roundDecimal("-.09", RoundingMode.FLOOR); // -0.1
         System.out.println("-----");
 
         // 四舍五入
-        roundDecimal(".05", BigDecimal.ROUND_HALF_UP); // 0.1
-        roundDecimal("-.05", BigDecimal.ROUND_HALF_UP); // -0.1
+        roundDecimal(".05", RoundingMode.HALF_UP); // 0.1
+        roundDecimal("-.05", RoundingMode.HALF_UP); // -0.1
         System.out.println("-----");
 
         // 和ROUND_HALF_UP区别在于0.5时会向下取整
-        roundDecimal(".05", BigDecimal.ROUND_HALF_DOWN); // 0.0
-        roundDecimal("-.05", BigDecimal.ROUND_HALF_DOWN); // 0.0
-        roundDecimal(".06", BigDecimal.ROUND_HALF_DOWN); // 0.1
-        roundDecimal("-.06", BigDecimal.ROUND_HALF_DOWN); // -0.1
+        roundDecimal(".05", RoundingMode.HALF_DOWN); // 0.0
+        roundDecimal("-.05", RoundingMode.HALF_DOWN); // 0.0
+        roundDecimal(".06", RoundingMode.HALF_DOWN); // 0.1
+        roundDecimal("-.06", RoundingMode.HALF_DOWN); // -0.1
         System.out.println("-----");
 
         // 银行家舍入 https://gitee.com/tothis/javascript-record/blob/master/base/number.html
         // 四舍六入五留双 => 四舍六入五考虑 五后非零就进一 五后为零看奇偶 五前为偶应舍去 五前为奇要进一
-        roundDecimal(".05", BigDecimal.ROUND_HALF_EVEN); // 0.0
-        roundDecimal(".051", BigDecimal.ROUND_HALF_EVEN); // 0.1
-        roundDecimal(".15", BigDecimal.ROUND_HALF_EVEN); // 0.2
-        roundDecimal(".85", BigDecimal.ROUND_HALF_EVEN); // 0.8
+        roundDecimal(".05", RoundingMode.HALF_EVEN); // 0.0
+        roundDecimal(".051", RoundingMode.HALF_EVEN); // 0.1
+        roundDecimal(".15", RoundingMode.HALF_EVEN); // 0.2
+        roundDecimal(".85", RoundingMode.HALF_EVEN); // 0.8
         System.out.println("-----");
 
         // 不会舍人 默认舍人类型
-        roundDecimal("0", BigDecimal.ROUND_UNNECESSARY); // 0.0
+        roundDecimal("0", RoundingMode.UNNECESSARY); // 0.0
     }
 
-    private static void roundDecimal(String value, int type) {
+    private static void roundDecimal(String value, RoundingMode type) {
         System.out.println(new BigDecimal(value).setScale(1, type));
     }
 }

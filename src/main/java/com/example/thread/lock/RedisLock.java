@@ -1,4 +1,4 @@
-package com.example.thread;
+package com.example.thread.lock;
 
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -30,6 +30,7 @@ public class RedisLock {
     private static SetParams params = SetParams.setParams().nx().px(EXPIRE_TIME);
 
     private static JedisPool jedisPool;
+    private static int count = 0;
 
     static {
         JedisPoolConfig poolConfig = new JedisPoolConfig();
@@ -96,8 +97,6 @@ public class RedisLock {
             jedis.close();
         }
     }
-
-    private static int count = 0;
 
     public static void main(String[] args) {
 
