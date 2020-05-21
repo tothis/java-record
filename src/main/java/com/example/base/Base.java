@@ -29,24 +29,6 @@ public class Base {
         System.out.println(user4);
     }
 
-    @Data
-    @AllArgsConstructor
-    static class User implements Serializable, Cloneable {
-        private String name;
-        private User user;
-
-        // 必须实现Cloneable接口
-        @Override
-        public User clone() {
-            try {
-                return (User) super.clone();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-            throw new RuntimeException("克隆失败");
-        }
-    }
-
     /**
      * 使用序列化实现深拷贝
      * 如能保证拷贝对象 只对成员变量为基本类型或String类型操作 可使用浅拷贝
@@ -69,5 +51,23 @@ public class Base {
             e.printStackTrace();
         }
         throw new RuntimeException("深拷贝失败");
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class User implements Serializable, Cloneable {
+        private String name;
+        private User user;
+
+        // 必须实现Cloneable接口
+        @Override
+        public User clone() {
+            try {
+                return (User) super.clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+            throw new RuntimeException("克隆失败");
+        }
     }
 }

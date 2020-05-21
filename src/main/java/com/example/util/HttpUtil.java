@@ -16,14 +16,8 @@ import java.util.Map;
  */
 public class HttpUtil {
 
-    private enum HttpMethod {
-        GET, POST
-    }
-
     private final static int CONNECT_TIMEOUT = 5000;
-
     private final static String DEFAULT_ENCODING = "UTF-8";
-
     private final static String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36";
 
     public static String get(String urlPath, Map<String, String> param) {
@@ -167,5 +161,9 @@ public class HttpUtil {
 
     public static void main(String[] args) {
         System.out.println(HttpMethod.GET.name());
+    }
+
+    private enum HttpMethod {
+        GET, POST
     }
 }

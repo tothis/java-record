@@ -56,12 +56,25 @@ class Outer {
     private static String outerFlag = "outer"; // 外部类的私有属性
     private static String staticOuterFlag = "staticOuter"; // 外部类的私有静态属性
 
+    private static void outStaticTest() {
+        System.out.println("外部类staticTest方法");
+    }
+
     private void outTest() {
         System.out.println("外部类test方法");
     }
 
-    private static void outStaticTest() {
-        System.out.println("外部类staticTest方法");
+    static class StaticInner {
+        private static String staticInnerFlag = "staticInner"; // 静态内部类的私有静态属性
+        private String innerFlag = "inner"; // 静态内部类的私有属性
+
+        public void test() {
+            // 静态内部类不可访问外部类非静态方法
+            // outTest();
+            outStaticTest();
+            System.out.println(outerFlag + '\u0020' + staticOuterFlag
+                    + '\u0020' + innerFlag + '\u0020' + staticInnerFlag);
+        }
     }
 
     // 使用private修饰 表示私有内部类 该内部类仅供外部类使用
@@ -81,19 +94,6 @@ class Outer {
             }
             System.out.println(new methodClass(outerFlag + '\u0020'
                     + staticOuterFlag + '\u0020' + innerFlag));
-        }
-    }
-
-    static class StaticInner {
-        private String innerFlag = "inner"; // 静态内部类的私有属性
-        private static String staticInnerFlag = "staticInner"; // 静态内部类的私有静态属性
-
-        public void test() {
-            // 静态内部类不可访问外部类非静态方法
-            // outTest();
-            outStaticTest();
-            System.out.println(outerFlag + '\u0020' + staticOuterFlag
-                    + '\u0020' + innerFlag + '\u0020' + staticInnerFlag);
         }
     }
 }

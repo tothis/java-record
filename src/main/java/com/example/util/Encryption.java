@@ -10,6 +10,8 @@ import java.util.Random;
  */
 public class Encryption {
 
+    private static final int REPLACENUM = 4;
+
     public static void main(String[] args) {
 
         // java自带工具包MessageDigest
@@ -29,8 +31,6 @@ public class Encryption {
 
         System.out.println(equals("xx1234xx", "ss1234ss", 2));
     }
-
-    private static final int REPLACENUM = 4;
 
     /**
      * 加密用户密码并处理前后4个字符串

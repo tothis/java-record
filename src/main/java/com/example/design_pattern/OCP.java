@@ -8,6 +8,6 @@ package com.example.design_pattern;
 public class OCP {
     // 当应用的需求改变时 在不修改软件实体的源代码或者二进制代码的前提下 可以扩展模块的功能 使其满足新的需求
     public static void main(String[] args) {
-        
+
     }
 }

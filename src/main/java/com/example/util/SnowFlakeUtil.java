@@ -107,6 +107,24 @@ public class SnowFlakeUtil {
 
     // ***** method *****
 
+    // ***** test *****
+    public static void main(String[] args) {
+        SnowFlakeUtil snowFlakeUtil = new SnowFlakeUtil(0, 0);
+        for (int i = 0; i < 100; i++) {
+            // 10进制
+            Long id = snowFlakeUtil.nextId();
+            // 64进制
+            String result = NumberUtil.decToN(id, 64);
+
+            // 10进制转化为64进制
+            System.out.println("10进制 : " + id + " 64进制 : " + result);
+
+            // 64进制转化为10进制
+            System.out.println("64进制 : " + result + " 10进制 : "
+                    + NumberUtil.strToDec(result, 64));
+        }
+    }
+
     /**
      * 获得下一个id 该方法线程安全
      *
@@ -164,23 +182,5 @@ public class SnowFlakeUtil {
      */
     private long timeGen() {
         return System.currentTimeMillis();
-    }
-
-    // ***** test *****
-    public static void main(String[] args) {
-        SnowFlakeUtil snowFlakeUtil = new SnowFlakeUtil(0, 0);
-        for (int i = 0; i < 100; i++) {
-            // 10进制
-            Long id = snowFlakeUtil.nextId();
-            // 64进制
-            String result = NumberUtil.decToN(id, 64);
-
-            // 10进制转化为64进制
-            System.out.println("10进制 : " + id + " 64进制 : " + result);
-
-            // 64进制转化为10进制
-            System.out.println("64进制 : " + result + " 10进制 : "
-                    + NumberUtil.strToDec(result, 64));
-        }
     }
 }

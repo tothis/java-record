@@ -52,18 +52,18 @@ public class ReflectBase {
         }
     }
 
+    // 自定义注解 模拟 junit注解@Test
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Test {
+    }
+
     // 使用自定义注解
     private class AnnotationTest {
         @Test
         public void run() {
             System.out.println("Test测试");
         }
-    }
-
-    // 自定义注解 模拟 junit注解@Test
-    @Target(ElementType.METHOD)
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface Test {
     }
 
 }

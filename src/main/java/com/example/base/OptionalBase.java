@@ -10,6 +10,8 @@ import java.util.Optional;
  * @description jdk8 Optional相关基础
  */
 public class OptionalBase {
+    private static final String UNKOWN = "unkown";
+
     // 更多api https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html
     public static void main(String[] args) {
         /**
@@ -41,29 +43,6 @@ public class OptionalBase {
         optionalTest(test1);
         optionalTest(test2);
     }
-
-    @Data
-    private static class User {
-        private String name;
-        private Integer age;
-    }
-
-    @Data
-    private static class Three {
-        private String value;
-    }
-
-    @Data
-    private static class Two {
-        private Three three;
-    }
-
-    @Data
-    private static class One {
-        private Two two;
-    }
-
-    private static final String UNKOWN = "unkown";
 
     private static String getName(User user) {
         // return user == null ? UNKOWN : user.getName(); // 传统方式
@@ -103,5 +82,26 @@ public class OptionalBase {
                 .map(One::getTwo)
                 .map(Two::getThree)
                 .map(Three::getValue).orElse(UNKOWN));
+    }
+
+    @Data
+    private static class User {
+        private String name;
+        private Integer age;
+    }
+
+    @Data
+    private static class Three {
+        private String value;
+    }
+
+    @Data
+    private static class Two {
+        private Three three;
+    }
+
+    @Data
+    private static class One {
+        private Two two;
     }
 }
