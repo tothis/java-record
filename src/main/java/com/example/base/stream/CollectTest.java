@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * @author 李磊
  * @datetime 2020/5/24 18:01
- * @description
+ * @description Stream collect方法使用
  */
 public class CollectTest {
     public static void main(String[] args) {

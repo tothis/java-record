@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * @author 李磊
  * @datetime 2020/5/24 17:28
- * @description
+ * @description 流提取元素
  */
 public class ConvertTest {
     public static void main(String[] args) {

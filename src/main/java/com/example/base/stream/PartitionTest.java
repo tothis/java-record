@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * @author 李磊
  * @datetime 2020/5/24 17:59
- * @description 分割数组
+ * @description 集合分割
  */
 public class PartitionTest {
     public static void main(String[] args) {

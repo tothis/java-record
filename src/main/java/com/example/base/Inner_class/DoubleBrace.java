@@ -27,6 +27,33 @@ public class DoubleBrace {
      * }
      * }
      * ...
+     * <p>
+     * 匿名内部类持有外部类引用 可使用`$0`获取到外部类
+     * <p>
+     * 把匿名内部类作为方法返回值时 可能会导致内存泄漏
+     * public Map createMap() {
+     * Map map = new HashMap() {{
+     * put("key", "value");
+     * }};
+     * return map;
+     * }
+     * <p>
+     * 当此map被赋值为其他类属性时 可能会导致GC不清理此对象 此时会导致内存泄漏
+     * <p>
+     * 将该对象声明为static可解决内存泄露
+     * <p>
+     * public static Map createMap() {
+     * Map map = new HashMap() {{
+     * put("key", "value");
+     * }};
+     * return map;
+     * }
+     * <p>
+     * 静态匿名类不会持有外部对象引用 可直接从jvm方法区(method area)获取到引用 而无需持久化外部对象
+     * <p>
+     * 替代方案
+     * List<String> list = Stream.of("one", "two").collect(Collectors.toList());
+     * Map map = Map.of("map1", "java", "map2", "rust"); // jdk9 api
      *
      * @param args
      */

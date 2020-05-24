@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 /**
  * @author 李磊
  * @time 2019/11/30 22:14
- * @description jdk8 Stream相关基础
+ * @description 流基础使用
  */
 public class Main {
     public static void main(String[] args) {

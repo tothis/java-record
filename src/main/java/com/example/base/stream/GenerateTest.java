@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+// import java.util.Map;
+
 /**
  * @author 李磊
  * @datetime 2020/5/24 17:39
@@ -43,5 +45,7 @@ public class GenerateTest {
         // Arrays.stream对基本类型和包装类都起作用
         Arrays.stream(new int[]{5, 4, 3, 2, 1}).forEach(System.out::println);
         Arrays.stream(new Integer[]{5, 4, 3, 2, 1}).forEach(System.out::println);
+        // jdk9
+        // System.out.println(Map.of("map1", "java", "map2", "rust"));
     }
 }
