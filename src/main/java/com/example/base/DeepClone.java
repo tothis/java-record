@@ -10,7 +10,7 @@ import java.io.*;
  * @datetime 2020/1/15 17:18
  * @description java基本知识
  */
-public class Base {
+public class DeepClone {
     public static void main(String[] args) {
         // 深拷贝
         User user1 = new User("name1", new User("2name1", null));
