@@ -5,12 +5,12 @@ plugins {
 group 'com.example'
 version '1.0'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_13
 
 repositories {
     // 本地maven仓库
     mavenLocal()
-    maven { url = 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url = 'https://maven.aliyun.com/repository/central' }
     // 和maven中央仓库一样的另一个依赖管理仓库 主要是java
     jcenter()
 }

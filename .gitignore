@@ -1,6 +1,4 @@
-# idea
 .idea
-
-# gradle
 .gradle
 build
+out
