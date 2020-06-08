@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 group 'com.example'
@@ -8,11 +9,10 @@ version '1.0'
 sourceCompatibility = JavaVersion.VERSION_13
 
 repositories {
-    // 本地maven仓库
     mavenLocal()
-    maven { url = 'https://maven.aliyun.com/repository/central' }
-    // 和maven中央仓库一样的另一个依赖管理仓库 主要是java
-    jcenter()
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    maven { url 'https://maven.aliyun.com/repository/spring' }
+    mavenCentral()
 }
 
 ext {
@@ -57,4 +57,10 @@ dependencies {
     implementation "org.bytedeco:javacv-platform:${javacvVersion}"
     implementation "org.bytedeco:ffmpeg-platform:${ffmpegVersion}"
     implementation "org.apache.commons:commons-jexl3:${commonsJexVersion}"
+}
+
+// https://github.com/openjfx/javafx-gradle-plugin
+// 定义使用的模块 可自动下载依赖
+javafx {
+    modules = [ 'javafx.controls' ,'javafx.fxml']
 }
