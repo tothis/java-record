@@ -1,10 +1,11 @@
 package com.example.base;
 
+import lombok.SneakyThrows;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -33,8 +34,8 @@ public class ReflectBase {
      * <p>
      * newInstance() 通过类的不带参数的构造方法创建这个类的一个对象
      */
-    public static void main(String[] args) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-
+    @SneakyThrows
+    public static void main(String[] args) {
         // 获得class
         Class clazz = AnnotationTest.class;
         // 获得所有的方法
@@ -46,7 +47,7 @@ public class ReflectBase {
                 boolean annotationPresent = method.isAnnotationPresent(Test.class);
                 if (annotationPresent) {
                     // 该方法使用@Test注解
-                    method.invoke(clazz.newInstance());
+                    method.invoke(clazz.getDeclaredConstructor().newInstance());
                 }
             }
         }
@@ -65,5 +66,4 @@ public class ReflectBase {
             System.out.println("Test测试");
         }
     }
-
 }

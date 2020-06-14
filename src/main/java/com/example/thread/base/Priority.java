@@ -1,6 +1,6 @@
 package com.example.thread.base;
 
-import com.example.thread.Util;
+import com.example.thread.ThreadUtil;
 
 /**
  * @author 李磊
@@ -10,10 +10,10 @@ import com.example.thread.Util;
 public class Priority {
 
     public static void main(String[] args) {
-        Thread thread1 = new Thread(() -> Util.out(), "thread1");
-        Thread thread2 = new Thread(() -> Util.out(), "thread2");
-        Thread thread3 = new Thread(() -> Util.out(), "thread3");
-        Thread thread4 = new Thread(() -> Util.out(), "thread4");
+        Thread thread1 = new Thread(() -> ThreadUtil.outName(), "thread1");
+        Thread thread2 = new Thread(() -> ThreadUtil.outName(), "thread2");
+        Thread thread3 = new Thread(() -> ThreadUtil.outName(), "thread3");
+        Thread thread4 = new Thread(() -> ThreadUtil.outName(), "thread4");
 
         thread1.start();
 

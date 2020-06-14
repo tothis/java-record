@@ -11,7 +11,7 @@ public class ThreadTest {
         class Thread1 extends Thread {
             @Override
             public void run() {
-                Util.out();
+                ThreadUtil.outName();
             }
         }
         new Thread1().start();

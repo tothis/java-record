@@ -1,5 +1,7 @@
 package com.example.thread.lock;
 
+import com.example.thread.ThreadUtil;
+import com.example.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -7,7 +9,6 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.params.SetParams;
 
 import java.util.Collections;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,7 +38,8 @@ public class RedisLock {
         poolConfig.setMaxIdle(50);
         poolConfig.setMinIdle(10);
         poolConfig.setMaxTotal(1000);
-        jedisPool = new JedisPool(poolConfig, "192.168.1.56", 6379, 0, "123456");
+        jedisPool = new JedisPool(poolConfig, "192.168.92.128", 6379
+                , 0, "123456");
     }
 
     /**
@@ -52,10 +54,12 @@ public class RedisLock {
                 // set命令返回ok 则证明获取锁成功
                 String lock = jedis.set(LOCK_KEY, requestId, params);
                 if (LOCK_SUCCESS.equals(lock)) {
+                    System.out.println(ThreadUtil.name() + "获取锁成功");
                     return true;
                 }
                 // 否则循环等待 在timeout时间内仍未获取到锁 则获取失败
                 if (System.currentTimeMillis() - start >= TIMEOUT) {
+                    System.out.println(ThreadUtil.name() + "获取锁失败");
                     return false;
                 }
                 try {
@@ -63,6 +67,7 @@ public class RedisLock {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println(ThreadUtil.name() + "等待获取锁");
             }
         } finally {
             jedis.close();
@@ -90,8 +95,10 @@ public class RedisLock {
             Object result = jedis.eval(script, Collections.singletonList(LOCK_KEY),
                     Collections.singletonList(id));
             if (UNLOCK_SUCCESS.equals(result.toString())) {
+                System.out.println(ThreadUtil.name() + "释放锁成功");
                 return true;
             }
+            System.out.println(ThreadUtil.name() + "释放锁失败");
             return false;
         } finally {
             jedis.close();
@@ -99,16 +106,14 @@ public class RedisLock {
     }
 
     public static void main(String[] args) {
-
         int threadTotal = 1000;
         CountDownLatch countDownLatch = new CountDownLatch(threadTotal);
         ExecutorService executorService = Executors.newFixedThreadPool(threadTotal);
         long start = System.currentTimeMillis();
+        // 获取唯一id
+        String id = StringUtil.uuid();
         for (int i = 0; i < threadTotal; i++) {
             executorService.execute(() -> {
-
-                // 获取唯一id
-                String id = UUID.randomUUID().toString().replace("-", "");
                 try {
                     RedisLock.lock(id);
                     count++;

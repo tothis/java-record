@@ -10,7 +10,7 @@ public class RunnableTest {
         class Runnable1 implements Runnable {
             @Override
             public void run() {
-                Util.out();
+                ThreadUtil.outName();
             }
         }
 
@@ -19,11 +19,11 @@ public class RunnableTest {
         Thread runnable2 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Util.out();
+                ThreadUtil.outName();
             }
         }, "runnable-2");
         // lambda写法
-        Thread runnable3 = new Thread(() -> Util.out(), "runnable-3");
+        Thread runnable3 = new Thread(() -> ThreadUtil.outName(), "runnable-3");
         runnable1.start();
         runnable2.start();
         runnable3.start();

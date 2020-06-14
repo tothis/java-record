@@ -36,8 +36,7 @@ public class Main {
         // 第二次使用会报错 stream has already been operated upon or closed
         // integerStream.forEach(System.out::println);
 
-
-        List<User> list = new ArrayList<User>() {{
+        List<User> list = new ArrayList<>() {{
             for (int i = 0; i < 5; i++) {
                 add(new User((long) i, (byte) (i % 2 == 0 ? 1 : 0), "name" + i));
             }
@@ -50,7 +49,7 @@ public class Main {
         Stream.of(1, 1, 2, 2, 3, 3).distinct().forEach(System.out::println);
 
         // 根据某个实体属性名称去重
-        List<User> testlist1 = list.stream()
+        List<User> testList1 = list.stream()
                 .filter(distinctByKey(itme -> itme.getAge()))
                 // 后面可以连接多个filter
                 // .filter(distinctByKey(itme -> itme.getxxx()))
@@ -58,7 +57,7 @@ public class Main {
                 .collect(Collectors.toList());
 
         // 通过TreeSet实现去重
-        List<User> testlist2 = list.stream().collect(
+        List<User> testList2 = list.stream().collect(
                 Collectors.collectingAndThen(
                         Collectors.toCollection(() -> new TreeSet<>(
                                 // 多个属性可以拼接为字符串再去去重
