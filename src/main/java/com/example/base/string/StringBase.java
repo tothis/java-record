@@ -1,4 +1,4 @@
-package com.example.base;
+package com.example.base.string;
 
 /**
  * @author 李磊
