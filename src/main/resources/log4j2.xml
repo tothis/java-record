@@ -4,10 +4,8 @@
 <Configuration status="info" monitorInterval="1800">
     <!-- http://logging.apache.org/log4j/2.x/manual/layouts.html -->
     <properties>
-        <!-- 控制台显示的日志最低级别 -->
-        <property name="console-print-level">DEBUG</property>
-        <!-- 日志默认输出级别 -->
-        <property name="output-log-level">INFO</property>
+        <!-- 控制台显示日志级别 -->
+        <property name="output-print-level">INFO</property>
 
         <!-- 日志分割默认最小单位 -->
         <property name="every-file-size">20MB</property>
@@ -29,7 +27,8 @@
         <!-- %logger 输出logger名称 因为Root Logger没有名称 所以没有输出 -->
         <!-- %-5level 输出日志级别 -5表示左对齐并且固定输出5个字符 如果不足在右边补0 -->
         <!-- %highlight 为每个日志级别设置颜色 {FATAL=white, ERROR=red, WARN=blue, INFO=black, DEBUG=green, TRACE=blue} -->
-        <property name="console-log-pattern">
+        <!-- idea vm中添加'-Dlog4j.skipJansi=false' 开启彩色日志 -->
+        <property name="console-print-pattern">
             %highlight{[%p] [%-d{yyyy-MM-dd HH:mm:ss}] [%l] %m%n}{FATAL=white,
             ERROR=red, WARN=yellow, INFO=cyan, DEBUG=magenta, TRACE=green}
         </property>
@@ -37,22 +36,22 @@
         <property name="rolling-max">50</property>
         <property name="rolling-fileName">${basePath}/rolling.log</property>
         <property name="rolling-filePattern">${basePath}/%d{yyyy-MM}/all-%d{yyyy-MM-dd}-%i.log.gz</property>
-        <property name="rolling-output-log-pattern">%d{yyyy-MM-dd HH:mm:ss} [%-5level] %C.%M - %m%n</property>
+        <property name="rolling-output-print-pattern">%d{yyyy-MM-dd HH:mm:ss} [%-5level] %C.%M - %m%n</property>
 
         <property name="file-fileName">${basePath}/file.log</property>
-        <property name="file-output-log-pattern">%d{yyyy-MM-dd HH:mm:ss} %C.%M - %m%n</property>
+        <property name="file-output-print-pattern">%d{yyyy-MM-dd HH:mm:ss} %C.%M - %m%n</property>
     </properties>
 
     <Appenders>
         <!-- 定义输出到控制台的配置 -->
         <Console name="console" target="SYSTEM_OUT">
             <!-- 设置输出格式 不设置默认为%m%n -->
-            <PatternLayout pattern="${console-log-pattern}"/>
+            <PatternLayout pattern="${console-print-pattern}"/>
         </Console>
 
         <!-- 添加一个文本追加器 文件位于根目录下 名为log.log -->
         <File name="file" fileName="${file-fileName}">
-            <PatternLayout pattern="${file-output-log-pattern}"/>
+            <PatternLayout pattern="${file-output-print-pattern}"/>
         </File>
 
         <!--
@@ -61,7 +60,7 @@
          -->
         <RollingFile name="rolling-file" fileName="${rolling-fileName}"
                      filePattern="${rolling-filePattern}">
-            <PatternLayout pattern="${rolling-output-log-pattern}"/>
+            <PatternLayout pattern="${rolling-output-print-pattern}"/>
             <SizeBasedTriggeringPolicy size="${every-file-size}"/>
             <!-- 同一目录下最多有几个日志文件时开始删除旧文件 创建新日志文件 -->
             <DefaultRolloverStrategy max="${rolling-max}"/>
@@ -82,7 +81,7 @@
             <AppenderRef ref="console"/>
         </Logger>
 
-        <!--Root level="${output-log-level}">
+        <!--Root level="${output-print-level}">
             <AppenderRef ref="console"/>
             <AppenderRef ref="file"/>
             <AppenderRef ref="rolling-file"/>
