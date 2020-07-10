@@ -1,5 +1,7 @@
 package com.example.captcha;
 
+import com.greenpineyu.fel.FelEngine;
+import com.greenpineyu.fel.FelEngineImpl;
 import lombok.SneakyThrows;
 
 import javax.imageio.ImageIO;
@@ -30,5 +32,12 @@ public class Main {
             ImageIO.write(image2, IMAGE_TYPE, new File("D:/data/b" + i + ".png"));
             System.out.println(number.content() + ' ' + number.result());
         }
+
+        // fel计算表达式
+        FelEngine fel = new FelEngineImpl();
+        System.out.println(3 * 2 + 1);
+        System.out.println(fel.eval("3*2+1"));
+        System.out.println(3 * (2 + 1));
+        System.out.println(fel.eval("3*(2+1)"));
     }
 }

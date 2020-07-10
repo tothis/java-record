@@ -26,6 +26,7 @@ ext {
     commonsJexVersion = '3.1'
     curatorVersion = '5.0.0'
     nettyVersion = '4.1.50.Final'
+    felVersion = '0.8'
 }
 
 dependencies {
@@ -63,6 +64,9 @@ dependencies {
 
     // netty
     implementation "io.netty:netty-all:${nettyVersion}"
+
+    // fel
+    implementation "org.eweb4j:fel:${felVersion}"
 }
 
 // https://github.com/openjfx/javafx-gradle-plugin

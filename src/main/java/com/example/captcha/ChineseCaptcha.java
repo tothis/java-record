@@ -16,13 +16,15 @@ import java.util.Random;
 @Slf4j
 public class ChineseCaptcha {
     // 宽度
-    public static final int IMAGE_WIDTH = 160;
+    private static final int IMAGE_WIDTH = 160;
     // 高度
-    public static final int IMAGE_HEIGHT = 40;
+    private static final int IMAGE_HEIGHT = 40;
     // 字体大小
-    public static final int FONT_SIZE = 32;
+    private static final int FONT_SIZE = 28;
     // 干扰线数量
-    public static final int IMAGE_DISTURB_LINE_NUMBER = 15;
+    private static final int IMAGE_DISTURB_LINE_NUMBER = 15;
+    // 后缀
+    private static final String SUFFIX = "等于？";
 
     // 汉字数字
     private static final String SOURCE = "零一二三四五六七八九十乘除加减";
@@ -57,7 +59,7 @@ public class ChineseCaptcha {
         g.fillRect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
         g.setColor(color());
         // 图片边框
-        g.drawRect(0, 0, IMAGE_WIDTH - 2, IMAGE_HEIGHT - 2);
+        g.drawRect(0, 0, IMAGE_WIDTH - 1, IMAGE_HEIGHT - 1);
         g.setColor(color());
         for (int i = 0; i < IMAGE_DISTURB_LINE_NUMBER; i++) {
             // 绘制干扰线
@@ -79,14 +81,15 @@ public class ChineseCaptcha {
             builder.append(ch);
             drawString((Graphics2D) g, ch, i);
         }
-        drawString((Graphics2D) g, "等于？", 3);
-        content = builder.append("等于？").toString();
+        drawString((Graphics2D) g, SUFFIX, 3);
+        content = builder.append(SUFFIX).toString();
         g.dispose();
         return image;
     }
 
     private void createMathChar() {
         StringBuilder number = new StringBuilder();
+        // 10以内数字
         int xx = RANDOM.nextInt(10);
         int yy = RANDOM.nextInt(10);
         // 0~3 对应加减乘除

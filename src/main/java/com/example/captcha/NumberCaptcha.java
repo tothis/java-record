@@ -13,15 +13,15 @@ import java.util.Random;
  */
 public class NumberCaptcha {
     // 宽度
-    public static final int IMAGE_WIDTH = 160;
+    private static final int IMAGE_WIDTH = 160;
     // 高度
-    public static final int IMAGE_HEIGHT = 40;
+    private static final int IMAGE_HEIGHT = 40;
     // 字体大小
-    public static final int FONT_SIZE = 32;
+    private static final int FONT_SIZE = 28;
     // 字体目录
-    public static final String FONT_PATH = "/font/";
+    private static final String FONT_PATH = "/font/";
     // 字体列表
-    public static final String[] FONT_NAMES = {
+    private static final String[] FONT_NAMES = {
             "actionj.ttf", "epilog.ttf", "headache.ttf"
             , "lexo.ttf", "prefix.ttf", "robot.ttf"
     };
@@ -70,6 +70,7 @@ public class NumberCaptcha {
                 number.append(xx);
             }
         }
+
         content = number.append("=?").toString();
     }
 
@@ -123,15 +124,16 @@ public class NumberCaptcha {
         g2d.setFont(font());
         FontMetrics fontMetrics = g2d.getFontMetrics();
         // 每一个字符所占的宽度
-        int fW = IMAGE_WIDTH / chars.length;
-        // 字符的左右边距
-        int fSp = (fW - (int) fontMetrics.getStringBounds("8", g2d).getWidth()) / 2;
+        int fx = IMAGE_WIDTH / chars.length;
+        // 字符左填充
+        int flp = 10;
         for (int i = 0; i < chars.length; i++) {
+            String item = String.valueOf(chars[i]);
             g2d.setColor(color());
             // 文字的纵坐标
-            int fY = IMAGE_HEIGHT - ((IMAGE_HEIGHT - (int) fontMetrics
-                    .getStringBounds(String.valueOf(chars[i]), g2d).getHeight()) >> 1);
-            g2d.drawString(String.valueOf(chars[i]), i * fW + fSp + 3, fY - 3);
+            int fy = IMAGE_HEIGHT - ((IMAGE_HEIGHT - (int) fontMetrics
+                    .getStringBounds(item, g2d).getHeight()) >> 1);
+            g2d.drawString(item, flp + i * fx + 3, fy - 3);
         }
         g2d.dispose();
         return image;
