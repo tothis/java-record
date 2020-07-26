@@ -36,7 +36,7 @@ public class Main {
         // 第二次使用会报错 stream has already been operated upon or closed
         // integerStream.forEach(System.out::println);
 
-        List<User> list = new ArrayList<>() {{
+        List<User> list = new ArrayList<User>() {{
             for (int i = 0; i < 5; i++) {
                 add(new User((long) i, (byte) (i % 2 == 0 ? 1 : 0), "name" + i));
             }

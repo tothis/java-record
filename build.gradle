@@ -6,7 +6,7 @@ plugins {
 group 'com.example'
 version '1.0'
 
-sourceCompatibility = JavaVersion.VERSION_13
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenLocal()
@@ -27,6 +27,7 @@ ext {
     curatorVersion = '5.0.0'
     nettyVersion = '4.1.50.Final'
     felVersion = '0.8'
+    hutoolVersion = '5.3.9'
 }
 
 dependencies {
@@ -67,6 +68,8 @@ dependencies {
 
     // fel
     implementation "org.eweb4j:fel:${felVersion}"
+    // hutool java工具包
+    implementation "cn.hutool:hutool-all:${hutoolVersion}"
 }
 
 // https://github.com/openjfx/javafx-gradle-plugin

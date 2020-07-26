@@ -20,7 +20,7 @@ public class ChineseCaptcha {
     // 高度
     private static final int IMAGE_HEIGHT = 40;
     // 字体大小
-    private static final int FONT_SIZE = 28;
+    private static final int FONT_SIZE = 22;
     // 干扰线数量
     private static final int IMAGE_DISTURB_LINE_NUMBER = 15;
     // 后缀
