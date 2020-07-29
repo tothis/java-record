@@ -15,22 +15,35 @@ import java.util.Random;
  */
 @Slf4j
 public class ChineseCaptcha {
-    // 宽度
+    /**
+     * 宽度
+     */
     private static final int IMAGE_WIDTH = 160;
-    // 高度
+    /**
+     * 高度
+     */
     private static final int IMAGE_HEIGHT = 40;
-    // 字体大小
+    /**
+     * 字体大小
+     */
     private static final int FONT_SIZE = 22;
-    // 干扰线数量
+    /**
+     * 干扰线数量
+     */
     private static final int IMAGE_DISTURB_LINE_NUMBER = 15;
-    // 后缀
+    /**
+     * 后缀
+     */
     private static final String SUFFIX = "等于？";
-
-    // 汉字数字
+    /**
+     * 汉字数字
+     */
     private static final String SOURCE = "零一二三四五六七八九十乘除加减";
-
-    // 计算类型
+    /**
+     * 计算类型
+     */
     private static final Map<String, Integer> calcType = new HashMap<>();
+
     private static final Random RANDOM = new Random();
 
     static {
@@ -41,9 +54,13 @@ public class ChineseCaptcha {
         calcType.put("-", 14);
     }
 
-    // 计算公式
+    /**
+     * 计算公式
+     */
     private String content;
-    // 计算结果
+    /**
+     * 计算结果
+     */
     private int result;
 
     /**
@@ -142,7 +159,9 @@ public class ChineseCaptcha {
         g2d.rotate(-angle * Math.PI / 180, 5 + i * 25, 20);
     }
 
-    // 获取随机颜色
+    /**
+     * 获取随机颜色
+     */
     private Color color() {
         int r = RANDOM.nextInt(256);
         int g = RANDOM.nextInt(256);
