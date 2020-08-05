@@ -1,4 +1,4 @@
-package com.example.base.Inner_class;
+package com.example.base.inner_class;
 
 import lombok.AllArgsConstructor;
 import lombok.ToString;
