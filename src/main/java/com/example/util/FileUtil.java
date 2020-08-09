@@ -1,11 +1,8 @@
 package com.example.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import cn.hutool.core.util.ZipUtil;
+
+import java.io.*;
 
 /**
  * @author 李磊
@@ -24,7 +21,14 @@ public final class FileUtil {
      * @return
      * @throws Exception
      */
-    public static void copyFile(File in, File out) {
+    public static void copyFile(File in, File out) throws FileNotFoundException {
+        if (!in.exists()) {
+            throw new FileNotFoundException(in.getName() + "不存在");
+        }
+        // 输出文件不存在就创建
+        if (!out.exists()) {
+            createFile(out);
+        }
         try (
                 FileInputStream inputStream = new FileInputStream(in);
                 FileOutputStream outputStream = new FileOutputStream(out)
@@ -34,6 +38,8 @@ public final class FileUtil {
             while ((i = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, i);
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,13 +48,13 @@ public final class FileUtil {
     /**
      * 拷贝文件
      *
-     * @param infile  输入文件
-     * @param outfile 输出文件
+     * @param in  输入文件
+     * @param out 输出文件
      * @return
      * @throws Exception
      */
-    public static void copyFile(String infile, String outfile) {
-        copyFile(new File(infile), new File(outfile));
+    public static void copyFile(String in, String out) throws FileNotFoundException {
+        copyFile(new File(in), new File(out));
     }
 
     /**
@@ -58,14 +64,15 @@ public final class FileUtil {
      */
     public static void createFile(File... files) {
         for (File file : files) {
-            // 文件所在目录不存在无法直接创建文件
-            if (!file.exists()) {
-                createDirectory(file.getParentFile());
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            // 文件所在目录不存在就创建
+            File parentFile = file.getParentFile();
+            if (!parentFile.exists()) {
+                createDirectory(parentFile);
+            }
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -81,11 +88,14 @@ public final class FileUtil {
      */
     public static void createDirectory(File... files) {
         for (File file : files) {
-            if (!file.exists()) {
-                file.mkdir();
-            } else if (file.exists() && !file.isDirectory()) {
-                throw new RuntimeException(file.getName() + "文件已存在");
+            if (file.exists()) {
+                throw new RuntimeException(file.getName() + "目录已存在");
             }
+            // 父目录不存在则创建
+            else if (!file.getParentFile().exists()) {
+                createDirectory(file.getParentFile());
+            }
+            file.mkdir();
         }
     }
 
@@ -96,65 +106,48 @@ public final class FileUtil {
     /**
      * 把String数组转为File数组
      *
-     * @param files
+     * @param paths
      * @return
      */
-    private static File[] files(String... files) {
-        File[] _files = new File[files.length];
-        for (int i = 0; i < files.length; i++) {
-            _files[i] = new File(files[i]);
+    private static File[] files(String... paths) {
+        File[] files = new File[paths.length];
+        for (int i = 0; i < paths.length; i++) {
+            files[i] = new File(paths[i]);
         }
-        return _files;
+        return files;
     }
 
     /**
-     * 文件打包的方法
+     * 追加文件内容
      *
-     * @param directoryName 打包目录
-     * @param zipName       打包文件名称
-     * @author 李磊
-     * @datetime 2019/12/17 14:12
+     * @param fileName
+     * @param content
      */
-    public static void packFile(String zipName, String directoryName) {
-
-        File[] files = new File(directoryName).listFiles();
-        if (files == null || files.length == 0) {
-            return;
+    public static void append(String fileName, String content) throws IOException {
+        // 目录不存在则报错
+        File parentFile = new File(fileName).getParentFile();
+        if (!parentFile.exists()) {
+            createDirectory(parentFile);
         }
-
-        // 定义字节流
-        byte[] buffer = new byte[1024];
-        try (
-                // 定义zip流 定义打包文件名和存放的路径
-                ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipName))
-        ) {
-            for (int i = 0; i < files.length; i++) {
-                File file = files[i];
-                // 判断文件是否为空
-                if (file.exists()) {
-                    // 创建输入流
-                    FileInputStream inputStream = new FileInputStream(file);
-                    // 获取文件名
-                    String name = file.getName();
-                    // 创建zip对象
-                    ZipEntry zipEntry = new ZipEntry(name);
-                    out.putNextEntry(zipEntry);
-                    int len;
-                    // 读入需要下载的文件的内容 打包到zip文件
-                    while ((len = inputStream.read(buffer)) > 0) {
-                        out.write(buffer, 0, len);
-                    }
-                    out.closeEntry();
-                    inputStream.close();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // 参数2 是否追加
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            // 文件不存在会自动创建
+            writer.write(content);
         }
     }
 
-    public static void main(String[] args) {
-        String path = "D:\\data\\test\\";
-        packFile(path + "test.zip", path);
+    public static void main(String[] args) throws IOException {
+        String path = "D:/data/test/";
+        // 打包文件
+        ZipUtil.zip(path, "D:/data/test.zip");
+
+        // 创建文件
+        // createFile(path + "one.txt", path + "two.txt");
+
+        // 复制文件
+        // copyFile(path + "one.txt", path + "two.txt");
+
+        // 文件内容追加
+        append(path + "test/test.txt", "test");
     }
 }
