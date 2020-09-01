@@ -9,6 +9,6 @@ import com.example.util.HttpUtil;
  */
 public class HttpURLConnectionTest {
     public static void main(String[] args) {
-        System.out.println(HttpUtil.get("http://pv.sohu.com/cityjson", null));
+        System.out.println(HttpUtil.get("http://pv.sohu.com/cityjson"));
     }
 }

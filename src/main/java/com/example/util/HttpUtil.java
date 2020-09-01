@@ -17,7 +17,6 @@ import java.util.Map;
 public class HttpUtil {
 
     private final static int CONNECT_TIMEOUT = 5000;
-    private final static String DEFAULT_ENCODING = "UTF-8";
     private final static String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36";
 
     public static String get(String urlPath, Map<String, String> param) {
@@ -40,7 +39,7 @@ public class HttpUtil {
 
             // 设为true 系统自动处理重定向 设为false 需要自己从http reply中分析新的url
             // 设置所有的http连接是否自动处理重定向
-            connection.setFollowRedirects(false);
+            HttpURLConnection.setFollowRedirects(false);
             // 设置本次连接是否自动处理重定向
             connection.setInstanceFollowRedirects(false);
 
@@ -62,6 +61,10 @@ public class HttpUtil {
             connection.disconnect();
         }
         return null;
+    }
+
+    public static String get(String urlPath) {
+        return get(urlPath, null);
     }
 
     public static String post(String urlPath, Map<String, String> param) {
@@ -109,7 +112,9 @@ public class HttpUtil {
      * @return
      */
     private static String param(Map<String, String> param) {
-        if (param == null || param.size() == 0) return "";
+        if (param == null || param.isEmpty()) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, String> entry : param.entrySet()) {
             builder.append(entry.getKey() + "=" + entry.getValue() + "&");
@@ -130,10 +135,8 @@ public class HttpUtil {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         ) {
             if (HttpURLConnection.HTTP_OK == connection.getResponseCode()) {
-                // InputStream inputStream = connection.getInputStream();
-                // ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 byte[] bytes = new byte[1024];
-                int length = 0;
+                int length;
                 while ((length = inputStream.read(bytes)) != -1) {
                     outputStream.write(bytes, 0, length);
                 }
@@ -143,18 +146,18 @@ public class HttpUtil {
             e.printStackTrace();
         }
 
-        // // 使用reader.readLine()读取
-        // String result = null;
-        // try {
-        //     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), DEFAULT_ENCODING));
-        //     String temp;
-        //     while ((temp = reader.readLine()) != null) {
-        //         result += temp;
-        //     }
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
-        // return result;
+        // 使用reader.readLine()读取
+        /*String result = null;
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), DEFAULT_ENCODING));
+            String temp;
+            while ((temp = reader.readLine()) != null) {
+                result += temp;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;*/
 
         return null;
     }
