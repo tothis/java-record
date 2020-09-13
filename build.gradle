@@ -1,12 +1,11 @@
 plugins {
     id 'java'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 group 'com.example'
 version '1.0'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_14
 
 repositories {
     mavenLocal()
@@ -72,8 +71,11 @@ dependencies {
     implementation "cn.hutool:hutool-all:${hutoolVersion}"
 }
 
-// https://github.com/openjfx/javafx-gradle-plugin
-// 定义使用的模块 可自动下载依赖
-javafx {
-    modules = ['javafx.controls', 'javafx.fxml']
+// 编译
+tasks.withType(JavaCompile) {
+    options.compilerArgs += "--enable-preview"
+}
+// 执行
+tasks.withType(JavaExec) {
+    jvmArgs += '--enable-preview'
 }

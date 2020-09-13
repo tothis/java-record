@@ -130,15 +130,15 @@ public class Interrupt {
 
             int i = 0;
             while (i < 10000) {
-//                try {
-//                    Thread.sleep(1);
-//                } catch (InterruptedException e) {
-//                    // e.printStackTrace();
-//                    // Thread.sleep Thread.join Object.wait LockSupport.park等阻塞库函数
-//                    // 抛出异常后 会清除线程中断状态 因此需要在catch中手动保留线程的中断状态
-//                    // Thread.currentThread().interrupt(); // 重新设置线程的中断标志
-//                    System.out.println("重新设置线程的中断标志");
-//                }
+                /*try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    // e.printStackTrace();
+                    // Thread.sleep Thread.join Object.wait LockSupport.park等阻塞库函数
+                    // 抛出异常后 会清除线程中断状态 因此需要在catch中手动保留线程的中断状态
+                    // Thread.currentThread().interrupt(); // 重新设置线程的中断标志
+                    System.out.println("重新设置线程的中断标志");
+                }*/
                 if (Thread.currentThread().isInterrupted()) {
                     array[0] += 1;
                 } else {

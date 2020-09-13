@@ -1,10 +1,10 @@
-### 查看jvm运行时参数指令
+### 查看JVM运行时参数指令
 1. -XX:+PrintFlagslnitial -version -开启查看运行时初始化参数
 2. -XX:+PrintFlagsFinal -version -开启查看运行时最终参数
 ***
 ### 参数类型
 
-1. 标准参数 准参数在各个jvm版本中基本不变
+1. 标准参数 准参数在各个JVM版本中基本不变
 * -help
 * -server -client
 * -version -showversion

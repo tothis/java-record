@@ -1,0 +1,1 @@
+接口隔离原则 INTERFACE SEGREGATION PRINCIPLE 建立单一接口 不要建立庞大臃肿的接口 尽量细化接口 接口中的方法尽量少

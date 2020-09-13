@@ -1,0 +1,1 @@
+单一职责原则 SINGLE RESPONSIBILITY PRINCIPLE 一个类负责一项职责
