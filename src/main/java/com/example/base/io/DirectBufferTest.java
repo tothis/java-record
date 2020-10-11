@@ -14,7 +14,7 @@ public class DirectBufferTest {
     /**
      * 在JDK 1.4中新加入了NIO(New Input/Output)类 引入了一种基于通道与缓冲区的I/O方式
      * 可通过native函数使用堆外内存 即直接内存(Direct Memory) 通过DirectByteBuffer对象作为这块内存的引用进行操作
-     * 能在一些场景提高性能 避免在java堆和native堆中来回复制数据
+     * 能在一些场景提高性能 避免在Java堆和native堆中来回复制数据
      *
      * @param args
      */

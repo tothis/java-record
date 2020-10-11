@@ -14,7 +14,7 @@ public class Encryption {
 
     public static void main(String[] args) {
 
-        // java自带工具包MessageDigest
+        // Java自带工具包MessageDigest
         // System.out.println(stringToMD5("123456"));
 
         // spring自带工具包DigestUtils

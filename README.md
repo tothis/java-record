@@ -1,7 +1,7 @@
 # java-base
 
 ### 介绍
-java开发记录
+Java开发记录
 
 algorithm
 design_pattern

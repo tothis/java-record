@@ -3,9 +3,10 @@ package com.example.algorithm;
 import java.util.stream.Stream;
 
 /**
+ * 斐波那契数列
+ *
  * @author 李磊
- * @datetime 2020/3/8 23:43
- * @description 斐波那契数列
+ * @since 1.0
  */
 public class Fibonacci {
     public static void main(String[] args) {

@@ -5,7 +5,7 @@ plugins {
 group 'com.example'
 version '1.0'
 
-sourceCompatibility = JavaVersion.VERSION_14
+sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenLocal()
@@ -59,7 +59,7 @@ dependencies {
     implementation "org.bytedeco:javacv-platform:${javacvVersion}"
     implementation "org.bytedeco:ffmpeg-platform:${ffmpegVersion}"
     implementation "org.apache.commons:commons-jexl3:${commonsJexVersion}"
-    // zookeeper客户端
+    // ZooKeeper客户端
     implementation "org.apache.curator:curator-recipes:${curatorVersion}"
 
     // netty
@@ -67,15 +67,6 @@ dependencies {
 
     // fel
     implementation "org.eweb4j:fel:${felVersion}"
-    // hutool java工具包
+    // hutool Java工具包
     implementation "cn.hutool:hutool-all:${hutoolVersion}"
-}
-
-// 编译
-tasks.withType(JavaCompile) {
-    options.compilerArgs += "--enable-preview"
-}
-// 执行
-tasks.withType(JavaExec) {
-    jvmArgs += '--enable-preview'
 }

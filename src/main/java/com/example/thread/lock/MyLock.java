@@ -7,7 +7,7 @@ import java.util.concurrent.locks.Lock;
 /**
  * @author 李磊
  * @time 2019/11/11 15:21
- * @description 手动实现java锁机制 tryLock lock unlock
+ * @description 手动实现Java锁机制 tryLock lock unlock
  */
 public class MyLock implements Lock {
 

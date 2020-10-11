@@ -83,7 +83,7 @@ public class BigDecimalBase {
         roundDecimal("-.06", RoundingMode.HALF_DOWN); // -0.1
         System.out.println("-----");
 
-        // 银行家舍入 https://gitee.com/tothis/javascript-record/blob/master/base/number.html
+        // 银行家舍入 https://github.com/tothis/javascript-record/blob/master/base/number.html
         // 四舍六入五留双 => 四舍六入五考虑 五后非零就进一 五后为零看奇偶 五前为偶应舍去 五前为奇要进一
         roundDecimal(".05", RoundingMode.HALF_EVEN); // 0.0
         roundDecimal(".051", RoundingMode.HALF_EVEN); // 0.1

@@ -37,7 +37,7 @@ public class InnerClassTest extends Outer {
             }
         }).start();
 
-        // 只有一个方法时可使用java8函数式编程
+        // 只有一个方法时可使用Java8函数式编程
         new Thread(() -> {
             System.out.println("匿名内部类2");
         }).start();

@@ -2,26 +2,32 @@ package com.example.algorithm;
 
 import java.util.Scanner;
 
+/**
+ * 随机字符串组成方式
+ *
+ * @author 李磊
+ * @since 1.0
+ */
 public class StringSplitMode {
 
     public static int count;
 
-    /**
-     * @param chars
-     * @param length
-     * @param out
-     */
     public static void markChar(char[] chars, int length, char[] out) {
-        if (length == 0) { // out中已经存储了m个数字
-            for (int i = 0; i < out.length; i++)
+        // out中已经存储了m个数字
+        if (length == 0) {
+            for (int i = 0; i < out.length; i++) {
                 System.out.print(out[i]);
+            }
             System.out.println("\n");
             count++;
             return;
         }
-        for (int i = chars.length; i >= length; i--) { // 从前向后依次选定一个 动态规划的体现
-            out[length - 1] = chars[i - 1]; // 选定一个之后
-            markChar(chars, length - 1, out); // 从前i-1个后选m-1 递归
+        // 从前向后依次选定一个 动态规划的体现
+        for (int i = chars.length; i >= length; i--) {
+            // 选定一个之后
+            out[length - 1] = chars[i - 1];
+            // 从前i-1个后选m-1 递归
+            markChar(chars, length - 1, out);
         }
     }
 
@@ -29,26 +35,26 @@ public class StringSplitMode {
      * 对给出的字符串按汉字 字母 数字统计个数
      */
     public static void countChar() {
-        int hanziCount = 0;
-        int zimuCount = 0;
-        int shuziCount = 0;
+        int chineseCharCount = 0;
+        int charCount = 0;
+        int numberCount = 0;
         System.out.println("请输入字符串>>>");
         Scanner scanner = new Scanner(System.in);
         String input_str = scanner.next();
         for (int i = 0; i < input_str.length(); i++) {
-            //从字符串中截取单个个字符去比较
+            // 从字符串中截取单个个字符去比较
             char ch = input_str.charAt(i);
             if (ch >= '0' && ch <= '9') {
-                shuziCount++;
+                numberCount++;
             } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
-                zimuCount++;
+                charCount++;
             } else {
-                hanziCount++;
+                chineseCharCount++;
             }
         }
-        System.out.println("汉字个数>>>" + hanziCount + "\n"
-                + "字母个数>>>" + zimuCount + "\n"
-                + "数字个数>>>" + shuziCount);
+        System.out.println("汉字个数>>>" + chineseCharCount + "\n"
+                + "字母个数>>>" + charCount + "\n"
+                + "数字个数>>>" + numberCount);
     }
 
     /**
@@ -59,16 +65,21 @@ public class StringSplitMode {
         System.out.print("请输入两个整数>>>");
         int one = scanner.nextInt();
         int two = scanner.nextInt();
-        int max = 0;//最大公约数
-        int min = 0;//最小公倍数
-        if (one > two) {//使one为两数较小值
+        // 最大公约数
+        int max = 0
+                // 最小公倍数
+                , min;
+        // 使one为两数较小值
+        if (one > two) {
             int temp = one;
             one = two;
             two = temp;
         }
 
         for (int i = 1; i <= one; i++) {
-            if (one % i == 0 & two % i == 0) max = i;
+            if (one % i == 0 & two % i == 0) {
+                max = i;
+            }
         }
 
         min = one * two / max;

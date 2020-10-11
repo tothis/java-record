@@ -5,9 +5,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * 九九乘法表
+ *
  * @author 李磊
- * @datetime 2020/3/8 23:57
- * @description 九九乘法表
+ * @since 1.0
  */
 public class Multiply {
     public static void main(String[] args) {

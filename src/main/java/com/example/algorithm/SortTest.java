@@ -1,9 +1,10 @@
 package com.example.algorithm;
 
 /**
+ * 常用排序实现
+ *
  * @author 李磊
- * @time 2019/11/16 1:43
- * @description 常用排序实现
+ * @since 1.0
  */
 public class SortTest {
     public static void main(String[] args) {
@@ -26,7 +27,9 @@ public class SortTest {
         // mergeSort(array, 0, array.length - 1);
         heapSort(array);
 
-        for (int i : array) System.out.print(i);
+        for (int i : array) {
+            System.out.print(i);
+        }
     }
 
     /**
@@ -48,14 +51,12 @@ public class SortTest {
             flag = true;
             for (int j = 0; j < array.length - 1 - i; j++) {
                 // 大的在前面
-                /*
-                 * 如array.length为6
-                 * if (array[4] > array[5]) {
-                 *     temp = array[4];
-                 *     array[4] = array[5];
-                 *     array[5] = temp;
-                 * }
-                 */
+                // 如array.length为6
+                /*if (array[4] > array[5]) {
+                    temp = array[4];
+                    array[4] = array[5];
+                    array[5] = temp;
+                }*/
                 num1++;
                 if (sortFlag ? array[j] > array[j + 1] : array[j] < array[j + 1]) {
                     temp = array[j];
@@ -85,8 +86,10 @@ public class SortTest {
         int num1 = 0, num2 = 0;
         int length = array.length;
         boolean flag = true;
-        int newLocation = 0; // 记录前面最小的已经有序的数据个数
-        int lastLocation = length - 1; // 最后一个元素的下标
+        // 记录前面最小的已经有序的数据个数
+        int newLocation = 0;
+        // 最后一个元素的下标
+        int lastLocation = length - 1;
         for (int i = 0; i < length - 1; i++) {
             int nowLocation = 0;
             for (int j = 0; j < lastLocation; j++) {
@@ -134,10 +137,12 @@ public class SortTest {
     public static void selectionSort(int[] array) {
         int min, num1 = 0, num2 = 0;
         for (int i = 0; i < array.length - 1; i++) {
-            min = i; // 记录最小元素的索引
+            // 记录最小元素的索引
+            min = i;
             for (int j = i + 1; j < array.length; j++) {
                 num1++;
-                if (array[min] > array[j]) { // 依次比较记录较小元素的索引
+                // 依次比较记录较小元素的索引
+                if (array[min] > array[j]) {
                     min = j;
                 }
             }
@@ -165,7 +170,8 @@ public class SortTest {
          * 记录排序与未排序分割点temp(为下一个排序对象)
          */
         for (int i = 1; i < array.length; i++) {
-            int temp = array[i]; // 用作比较的数据
+            // 用作比较的数据
+            int temp = array[i];
             int left = i - 1;
             /*
              * 第二个循环
@@ -186,7 +192,8 @@ public class SortTest {
                 array[left + 1] = array[left];
                 left--;
             }
-            array[left + 1] = temp; // 把temp放到空位上
+            // 把temp放到空位上
+            array[left + 1] = temp;
             num2++;
         }
         out(num1, num2);
@@ -324,8 +331,8 @@ public class SortTest {
             array[0] = array[i];
             array[i] = temp;
 
-            // 交换后 维护以根节点为父节点的最大堆
-            keepMaxHeap(array, 0, i); // 最后的叶子节点的上限值也相应发生变化
+            // 交换后 维护以根节点为父节点的最大堆 最后的叶子节点的上限值也相应发生变化
+            keepMaxHeap(array, 0, i);
         }
     }
 
@@ -371,14 +378,19 @@ public class SortTest {
      * @param end
      */
     public static void mergeSort(int[] array, int start, int end) {
-        if (start < end) { // 当子序列中只有一个元素时结束递归
-            int mean = (start + end) / 2; // 划分子序列
-            mergeSort(array, start, mean); // 对左侧子序列进行递归排序
-            mergeSort(array, mean + 1, end); // 对右侧子序列进行递归排序
+        // 当子序列中只有一个元素时结束递归
+        if (start < end) {
+            // 划分子序列
+            int mean = (start + end) / 2;
+            // 对左侧子序列进行递归排序
+            mergeSort(array, start, mean);
+            // 对右侧子序列进行递归排序
+            mergeSort(array, mean + 1, end);
 
             // 两路归并算法 两个排好序的子序列合并为一个子序列
-            int[] temp = new int[array.length]; // 辅助数组
-            int p1 = start, p2 = mean + 1, k = start; // p1 p2是检测指针 k是存放指针
+            int[] temp = new int[array.length];
+            // p1 p2是检测指针 k是存放指针
+            int p1 = start, p2 = mean + 1, k = start;
 
             while (p1 <= mean && p2 <= end) {
                 if (array[p1] <= array[p2])
