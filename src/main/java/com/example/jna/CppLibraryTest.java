@@ -11,8 +11,13 @@ public class CppLibraryTest {
 
     interface TestCppLibrary extends Library {
 
-        // dll文件生成 https://github.com/tothis/cpp-record/tree/master/lib
-        TestCppLibrary INSTANCE = Native.load("lib/libtest-lib-shared.dll", TestCppLibrary.class);
+        // 动态链接库文件生成参考 https://github.com/tothis/cpp-record/tree/master/lib
+        /**
+         * 程序打包为jar时运行不同的平台查找文件名称不同
+         * Windows查找 win32-x86-64/libtest-lib-shared.dll 文件
+         * Linux查找 linux-x86-64/liblibtest-lib-shared.dll 文件
+         */
+        TestCppLibrary INSTANCE = Native.load("libtest-lib-shared", TestCppLibrary.class);
 
         /**
          * 数字相加
