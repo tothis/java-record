@@ -28,6 +28,7 @@ ext {
     felVersion = '0.8'
     hutoolVersion = '5.3.9'
     jnaVersion = '5.6.0'
+    kumoVersion = '1.28'
 }
 
 dependencies {
@@ -71,5 +72,16 @@ dependencies {
     // hutool Java工具包
     implementation "cn.hutool:hutool-all:${hutoolVersion}"
 
+    // JNA
     implementation "net.java.dev.jna:jna:${jnaVersion}"
+
+    // 词云
+    implementation "com.kennycason:kumo-core:${kumoVersion}"
+    // 词云中文支持
+    implementation("com.kennycason:kumo-tokenizers:${kumoVersion}") {
+        // logback和log4j不可共存
+        exclude group: "ch.qos.logback", module: "logback-classic"
+        // log4j-to-slf4j和log4j-slf4j-impl不可共存
+        exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+    }
 }

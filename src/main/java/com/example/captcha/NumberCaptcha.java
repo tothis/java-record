@@ -8,28 +8,41 @@ import java.util.Random;
 
 /**
  * @author 李磊
- * @datetime 2020/7/9 20:16
- * @description
+ * @since 1.0
  */
 public class NumberCaptcha {
-    // 宽度
+    /**
+     * 宽度
+     */
     private static final int IMAGE_WIDTH = 160;
-    // 高度
+    /**
+     * 高度
+     */
     private static final int IMAGE_HEIGHT = 40;
-    // 字体大小
+    /**
+     * 字体大小
+     */
     private static final int FONT_SIZE = 28;
-    // 字体目录
+    /**
+     * 字体目录
+     */
     private static final String FONT_PATH = "/font/";
-    // 字体列表
+    /**
+     * 字体列表
+     */
     private static final String[] FONT_NAMES = {
             "actionj.ttf", "epilog.ttf", "headache.ttf"
             , "lexo.ttf", "prefix.ttf", "robot.ttf"
     };
 
     private static final Random RANDOM = new Random();
-    // 计算公式
+    /**
+     * 计算公式
+     */
     private String content;
-    // 计算结果
+    /**
+     * 计算结果
+     */
     private int result;
 
     /**
@@ -74,7 +87,11 @@ public class NumberCaptcha {
         content = number.append("=?").toString();
     }
 
-    // 获取随机颜色
+    /**
+     * 获取随机颜色
+     *
+     * @return
+     */
     private Color color() {
         int r = RANDOM.nextInt(256);
         int g = RANDOM.nextInt(256);
@@ -107,6 +124,8 @@ public class NumberCaptcha {
 
     /**
      * 生成验证码图形
+     *
+     * @return
      */
     public BufferedImage create() {
         createMathChar();

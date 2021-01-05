@@ -10,8 +10,7 @@ import java.util.Random;
 
 /**
  * @author 李磊
- * @datetime 2020/7/9 20:10
- * @description
+ * @since 1.0
  */
 @Slf4j
 public class ChineseCaptcha {
@@ -34,7 +33,7 @@ public class ChineseCaptcha {
     /**
      * 后缀
      */
-    private static final String SUFFIX = "等于？";
+    private static final String SUFFIX = "等于?";
     /**
      * 汉字数字
      */
@@ -161,6 +160,8 @@ public class ChineseCaptcha {
 
     /**
      * 获取随机颜色
+     *
+     * @return
      */
     private Color color() {
         int r = RANDOM.nextInt(256);
