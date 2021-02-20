@@ -1,12 +1,13 @@
 package com.example.util;
 
-import java.lang.reflect.Array;
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
+ * 数组工具类
+ *
  * @author 李磊
- * @datetime 2020/3/8 2:22
- * @description
+ * @since 1.0
  */
 public class ArrayUtil {
 
@@ -16,28 +17,29 @@ public class ArrayUtil {
      * @param arrays
      * @return
      */
-    public static Object[] arrayMerge1(Object[]... arrays) {
-        if (arrays == null || arrays.length == 0) return null;
-        if (arrays.length == 1) return arrays[0];
+    public static Object[] arrayMerge1(@Nonnull Object[]... arrays) {
+        if (arrays.length == 1) {
+            return arrays[0];
+        }
 
         int count = 0;
         for (int i = 0; i < arrays.length; i++) {
             count += arrays[i].length;
         }
-        Object[] result = new Object[count];
+        Object[] newArray = new Object[count];
         for (int i = 0; i < arrays.length; i++) {
             Object[] array = arrays[i];
             for (int j = 0; j < array.length; j++) {
-                result[arrays.length * i + j] = array[j];
+                newArray[arrays.length * i + j] = array[j];
             }
         }
-        return result;
+        return newArray;
     }
 
     /**
      * 合并多个数组
      */
-    public static Object[] arrayMerge2(Object[]... arrays) {
+    public static Object[] arrayMerge2(@Nonnull Object[]... arrays) {
         // 数组长度
         int length = 0;
         // 目标数组的起始位置
@@ -46,7 +48,7 @@ public class ArrayUtil {
         for (Object[] array : arrays) {
             length = length + array.length;
         }
-        Object[] result = new Object[length];
+        Object[] newArray = new Object[length];
         for (int i = 0; i < arrays.length; i++) {
             if (i > 0) {
                 // i为0时 目标数组开始索引为0
@@ -55,9 +57,9 @@ public class ArrayUtil {
                 index = index + arrays[i - 1].length;
             }
             System.arraycopy(arrays[i], 0
-                    , result, index, arrays[i].length);
+                    , newArray, index, arrays[i].length);
         }
-        return result;
+        return newArray;
     }
 
     /**
@@ -68,7 +70,7 @@ public class ArrayUtil {
      * @param to
      * @return
      */
-    public static Object[] slipArray1(Object[] array, int from, int to) {
+    public static Object[] slipArray1(@Nonnull Object[] array, int from, int to) {
         Object[] objects = new Object[to - from];
         for (int i = 0; i < objects.length; i++) {
             objects[i] = array[from + i];
@@ -84,7 +86,7 @@ public class ArrayUtil {
      * @param to
      * @return
      */
-    public static Object[] slipArray2(Object[] array, int from, int to) {
+    public static <T> T[] slipArray2(@Nonnull T[] array, int from, int to) {
         return Arrays.copyOfRange(array, from, to);
     }
 
@@ -95,21 +97,21 @@ public class ArrayUtil {
      * @param index
      * @return
      */
-    public static Object[] delete(Object array[], int index) {
+    public static Object[] delete(@Nonnull Object array[], int index) {
         // 创建新的数组 长度是原来-1
-        Object[] newarray = new Object[array.length - 1];
+        Object[] newArray = new Object[array.length - 1];
         // 将除了要删除的元素的其他 元素复制到新的数组
-        for (int i = 0; i < newarray.length; i++) {
+        for (int i = 0; i < newArray.length; i++) {
             // 需要删除下标之前的元素
             if (i < index) {
-                newarray[i] = array[i];
+                newArray[i] = array[i];
             }
             // 之后的元素
             else {
-                newarray[i] = array[i + 1];
+                newArray[i] = array[i + 1];
             }
         }
-        return newarray;
+        return newArray;
     }
 
     /**
@@ -119,44 +121,47 @@ public class ArrayUtil {
      * @param index
      * @return
      */
-    public static Object[] insert(Object array[], int index, Object element) {
+    public static Object[] insert(@Nonnull Object array[], int index, Object element) {
         // 创建一个新的数组 长度是原来长度+1
-        Object[] newarray = new Object[array.length + 1];
+        Object[] newArray = new Object[array.length + 1];
         // 把原数组中的数据赋值到新的数组
         for (int i = 0; i < array.length; i++) {
-            newarray[i] = array[i];
+            newArray[i] = array[i];
         }
 
-        for (int i = newarray.length - 1; i > index; i--) {
-            newarray[i] = newarray[i - 1];
+        for (int i = newArray.length - 1; i > index; i--) {
+            newArray[i] = newArray[i - 1];
         }
-        newarray[index] = element;
-        return newarray;
+        newArray[index] = element;
+        return newArray;
     }
 
     /**
-     * 数组类型转化
+     * 分割数组
      *
-     * @param array
-     * @param targetType
-     * @param <T>
+     * @param array 原数据
+     * @param size  分割后的数组长度
      * @return
      */
-    public static <T> T[] convertArray(Object[] array, Class<T> targetType) {
-        if (targetType == null) {
-            return (T[]) array;
+    public static Object[][] splitArray(@Nonnull Object[] array, int size) {
+        int length = array.length;
+        if (size >= length) {
+            return new Object[][]{array};
         }
-        if (array == null) {
-            return null;
+        int resultSize = length / size;
+        int remainder = length % size;
+        if (remainder != 0) {
+            resultSize++;
         }
-        T[] targetArray = (T[]) Array.newInstance(targetType, array.length);
-        try {
-            System.arraycopy(array, 0
-                    , targetArray, 0, array.length);
-        } catch (ArrayStoreException e) {
-            e.printStackTrace();
+        Object[][] result = new Object[resultSize][];
+        for (int i = 0; i < resultSize; i++) {
+            if (i == resultSize - 1 && remainder != 0) {
+                result[i] = Arrays.copyOfRange(array, i * size, length);
+            } else {
+                result[i] = Arrays.copyOfRange(array, i * size, (i + 1) * size);
+            }
         }
-        return targetArray;
+        return result;
     }
 
     public static void main(String[] args) {
@@ -177,10 +182,10 @@ public class ArrayUtil {
 
         print(arrayMerge1(arrays));
         print(arrayMerge2(arrays));
+        print(splitArray(arrays, 3));
     }
 
-    public static <T> void print(T[] array) {
+    public static <T> void print(@Nonnull T[] array) {
         Arrays.stream(array).forEach(System.out::println);
     }
-
 }
