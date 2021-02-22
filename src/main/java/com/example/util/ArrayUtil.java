@@ -1,7 +1,9 @@
 package com.example.util;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 数组工具类
@@ -17,7 +19,7 @@ public class ArrayUtil {
      * @param arrays
      * @return
      */
-    public static Object[] arrayMerge1(@Nonnull Object[]... arrays) {
+    public static Object[] arrayMerge1(Object[]... arrays) {
         if (arrays.length == 1) {
             return arrays[0];
         }
@@ -39,7 +41,7 @@ public class ArrayUtil {
     /**
      * 合并多个数组
      */
-    public static Object[] arrayMerge2(@Nonnull Object[]... arrays) {
+    public static Object[] arrayMerge2(Object[]... arrays) {
         // 数组长度
         int length = 0;
         // 目标数组的起始位置
@@ -70,24 +72,13 @@ public class ArrayUtil {
      * @param to
      * @return
      */
-    public static Object[] slipArray1(@Nonnull Object[] array, int from, int to) {
+    public static Object[] arraySlip(Object[] array, int from, int to) {
+        // return Arrays.copyOfRange(array, from, to);
         Object[] objects = new Object[to - from];
         for (int i = 0; i < objects.length; i++) {
             objects[i] = array[from + i];
         }
         return objects;
-    }
-
-    /**
-     * 获取数组中某一段元素
-     *
-     * @param array
-     * @param from
-     * @param to
-     * @return
-     */
-    public static <T> T[] slipArray2(@Nonnull T[] array, int from, int to) {
-        return Arrays.copyOfRange(array, from, to);
     }
 
     /**
@@ -97,7 +88,7 @@ public class ArrayUtil {
      * @param index
      * @return
      */
-    public static Object[] delete(@Nonnull Object array[], int index) {
+    public static Object[] delete(Object array[], int index) {
         // 创建新的数组 长度是原来-1
         Object[] newArray = new Object[array.length - 1];
         // 将除了要删除的元素的其他 元素复制到新的数组
@@ -121,7 +112,7 @@ public class ArrayUtil {
      * @param index
      * @return
      */
-    public static Object[] insert(@Nonnull Object array[], int index, Object element) {
+    public static Object[] insert(Object array[], int index, Object element) {
         // 创建一个新的数组 长度是原来长度+1
         Object[] newArray = new Object[array.length + 1];
         // 把原数组中的数据赋值到新的数组
@@ -143,7 +134,7 @@ public class ArrayUtil {
      * @param size  分割后的数组长度
      * @return
      */
-    public static Object[][] splitArray(@Nonnull Object[] array, int size) {
+    public static Object[][] splitArray(Object[] array, int size) {
         int length = array.length;
         if (size >= length) {
             return new Object[][]{array};
@@ -164,6 +155,38 @@ public class ArrayUtil {
         return result;
     }
 
+    /**
+     * 根据多个下标删除多个数据
+     *
+     * @param list
+     * @param indexes
+     * @param deleteNumber
+     */
+    public static void deleteListByIndexes(List list, int[] indexes, int deleteNumber) {
+        // 删除数据 从后往前删除 防止集合下标变化
+        flag:
+        for (int i = indexes.length - 1; i >= 0; i--) {
+            // 要删除的索引位置
+            int index = indexes[i];
+            // 删除数据 删除索引index前deleteNumber个数据
+            for (int j = 0; j < deleteNumber; j++) {
+                int checkIndex = index - j;
+                // 防止下标越界
+                /*if (
+                    // 防止索引过大
+                        checkIndex >= 0 &&
+                        // 防止list减少后 索引过大
+                        checkIndex <= list.size() - 1
+                ) {*/
+                if (checkIndex > 1 && checkIndex < list.size()) {
+                    list.remove(checkIndex);
+                } else {
+                    break flag;
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         int index = 1;
         int value = 0;
@@ -171,8 +194,7 @@ public class ArrayUtil {
         print(insert(array, index, value));
         print(delete(array, index));
 
-        print(slipArray1(array, 1, 2));
-        print(slipArray2(array, 1, 2));
+        print(arraySlip(array, 1, 2));
 
         Object[][] arrays = {
                 {"1", "2", "3"}
@@ -183,9 +205,19 @@ public class ArrayUtil {
         print(arrayMerge1(arrays));
         print(arrayMerge2(arrays));
         print(splitArray(arrays, 3));
+
+        // 要删除的索引 从小到大
+        int[] indexes = {7, 13, 19};
+        // 向前删除元素的数量
+        int deleteNumber = 8;
+
+        List<Integer> list = Stream.iterate(1, i -> i + 1)
+                .limit(20).collect(Collectors.toList());
+        deleteListByIndexes(list, indexes, deleteNumber);
+        System.out.println(list);
     }
 
-    public static <T> void print(@Nonnull T[] array) {
+    public static <T> void print(T[] array) {
         Arrays.stream(array).forEach(System.out::println);
     }
 }
